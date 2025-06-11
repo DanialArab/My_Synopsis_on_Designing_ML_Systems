@@ -224,6 +224,5 @@ Slow customer support is a problem, but it’s not an ML problem. **An ML proble
 
 Upon investigation, you discover that the bottleneck in responding to customer requests lies in routing customer requests to the right department among four departments: accounting, inventory, HR (human resources), and IT. You can alleviate this bottleneck by developing an ML model to predict which of these four departments a request should go to. **This makes it a classification problem. The input is the customer request. The output is the department the request should go to. The objective function is to minimize the difference between the predicted department and the actual department.**
 
-
-
+6. **Types of ML Tasks**: HERE
 
