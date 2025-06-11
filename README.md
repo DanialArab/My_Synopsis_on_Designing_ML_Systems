@@ -170,4 +170,16 @@ The good news is that these engineering challenges are being tackled at a breakn
 <a name="2"></a>
 ## CHAPTER 2: Introduction to Machine Learning Systems Design
 
-1. HERE
+1. To reiterate from the first chapter, ML systems design takes a system approach to MLOps, which means that we’ll consider an ML system holistically to ensure that all the components—the business requirements, the data stack, infrastructure, deployment, monitoring, etc.— and their stakeholders can work together to satisfy the specified objectives and requirements.
+
+Before we develop an ML system, we must understand **why this system is needed**. If this system is built for a business, it must be driven by **business objectives, which will need to be translated into ML objectives to guide the development of ML models.**
+
+Once everyone is on board with the objectives for our ML system, we’ll need to set out some **requirements to guide the development of this system**. In this book, we’ll consider the four requirements: **reliability, scalability, maintainability, and adaptability.** We will then introduce the iterative process for designing systems to meet those requirements.
+
+You might wonder: with all these objectives, requirements, and processes in place, can I finally start building my ML model yet? Not so soon! Before using ML algorithms to solve your problem, you first need to **frame your problem into a task that ML can solve**. We’ll continue this chapter with how to frame your ML problems. **The difficulty of your job can change significantly depending on how you frame your problem.**
+
+Because ML is a data-driven approach, a book on ML systems design will be amiss if it fails to discuss the importance of data in ML systems. The last part of this chapter touches on a debate that has consumed much of the ML literature in recent years: **which is more important—data or intelligent algorithms?**
+
+2. **Business and ML Objectives**: We first need to consider the objectives of the proposed ML projects. When working on an ML project, data scientists tend to care about the ML objectives: the metrics they can measure about the performance of their ML models such as accuracy, F1 score, inference latency, etc. They get excited about improving their model’s accuracy from 94% to 94.2% and might spend a ton of resources—data, compute, and engineering time—to achieve that. But the truth is: most companies don’t care about the fancy ML metrics. They don’t care about increasing a model’s accuracy from 94% to 94.2% unless it moves some **business metrics.** A pattern I see in many short-lived ML projects is that the data scientists become too focused on hacking ML metrics without paying attention to business metrics. Their managers, however, only care about business metrics and, after failing to see how an ML project can help push their business metrics, kill the projects prematurely (and possibly let go of the data science team involved)
+
+
