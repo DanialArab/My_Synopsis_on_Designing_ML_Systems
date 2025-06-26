@@ -290,50 +290,21 @@ Due to the complexity of ML systems and the poor practices in deploying them, a 
 
 7. **Edge cases**
    
-Imagine there existed a self-driving car that can drive you safely 99.99% of the time,
-but the other 0.01% of the time, it might get into a catastrophic accident that can
-leave you permanently injured or even dead.10 Would you use that car?
+Imagine there existed a self-driving car that can drive you safely 99.99% of the time, but the other 0.01% of the time, it might get into a catastrophic accident that can leave you permanently injured or even dead. Would you use that car?
 
-If you’re tempted to say no, you’re not alone. An ML model that performs well on
-most cases but fails on a small number of cases might not be usable if these failures
-cause catastrophic consequences. For this reason, major self-driving car companies
-are focusing on making their systems work on edge cases.11
+If you’re tempted to say no, you’re not alone. An ML model that performs well on most cases but fails on a small number of cases might not be usable if these failures cause catastrophic consequences. For this reason, **major self-driving car companies are focusing on making their systems work on edge cases.**
 
-Edge cases are the data samples so extreme that they cause the model to make
-catastrophic mistakes. Even though edge cases generally refer to data samples drawn
-from the same distribution, if there is a sudden increase in the number of data
-samples in which your model doesn’t perform well, it could be an indication that the
-underlying data distribution has shifted.
+**Edge cases are the data samples so extreme that they cause the model to make catastrophic mistakes.** Even though edge cases generally refer to data samples drawn from the same distribution, if there is a sudden increase in the number of data samples in which your model doesn’t perform well, it could be an indication that the underlying data distribution has shifted.
 
-Autonomous vehicles are often used to illustrate how edge cases can prevent an
-ML system from being deployed. But this is also true for any safety-critical application
-such as medical diagnosis, traffic control, e-discovery,12 etc. It can also be true
-for non-safety-critical applications. Imagine a customer service chatbot that gives
-reasonable responses to most of the requests, but sometimes, it spits out outrageously
-racist or sexist content. This chatbot will be a brand risk for any company that wants
-to use it, thus rendering it unusable.
+Autonomous vehicles are often used to illustrate how edge cases can prevent an ML system from being deployed. But this is also true for any safety-critical application such as medical diagnosis, traffic control, e-discovery, etc. It can also be true for non-safety-critical applications. Imagine a customer service chatbot that gives reasonable responses to most of the requests, but sometimes, it spits out outrageously racist or sexist content. This chatbot will be a brand risk for any company that wants to use it, thus rendering it unusable.
 
 8. **Edge Cases and Outliers**
    
-You might wonder about the differences between an outlier and an edge case. The
-definition of what makes an edge case varies by discipline. In ML, because of its
-recent adoption in production, edge cases are still being discovered, which makes
-their definition contentious.
-In this book, outliers refer to data: an example that differs significantly from other
-examples. Edge cases refer to performance: an example where a model performs
-significantly worse than other examples. An outlier can cause a model to perform
-unusually poorly, which makes it an edge case. However, not all outliers are edge
-cases. For example, a person jaywalking on a highway is an outlier, but it’s not an edge
-case if your self-driving car can accurately detect that person and decide on a motion
-response appropriately.
-During model development, outliers can negatively affect your model’s performance,
-as shown in Figure 8-1. In many cases, it might be beneficial to remove outliers
-as it helps your model to learn better decision boundaries and generalize better to
-unseen data. However, during inference, you don’t usually have the option to remove
-or ignore the queries that differ significantly from other queries. You can choose
-to transform it—for example, when you enter “mechin learnin” into Google Search,
-Google might ask if you mean “machine learning.” But most likely you’ll want to
-develop a model so that it can perform well even on unexpected inputs.
+You might wonder about the differences between an outlier and an edge case. The definition of what makes an edge case varies by discipline. In ML, because of its recent adoption in production, edge cases are still being discovered, which makes their definition contentious. 
+
+In this book, outliers refer to data: an example that differs significantly from other examples. Edge cases refer to performance: an example where a model performs significantly worse than other examples. An outlier can cause a model to perform unusually poorly, which makes it an edge case. However, not all outliers are edge cases. For example, a person jaywalking on a highway is an outlier, but it’s not an edge case if your self-driving car can accurately detect that person and decide on a motion response appropriately.
+
+During model development, outliers can negatively affect your model’s performance, as shown in Figure 8-1. In many cases, it might be beneficial to remove outliers as it helps your model to learn better decision boundaries and generalize better to unseen data. However, during inference, you don’t usually have the option to remove or ignore the queries that differ significantly from other queries. You can choose to transform it—for example, when you enter “mechin learnin” into Google Search, Google might ask if you mean “machine learning.” But most likely you’ll want to develop a model so that it can perform well even on unexpected inputs.
 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/figure_8_1.png)
 
