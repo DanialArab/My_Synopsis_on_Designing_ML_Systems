@@ -334,3 +334,6 @@ or ignore the queries that differ significantly from other queries. You can choo
 to transform it—for example, when you enter “mechin learnin” into Google Search,
 Google might ask if you mean “machine learning.” But most likely you’ll want to
 develop a model so that it can perform well even on unexpected inputs.
+
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/figure_8_1.png)
+
