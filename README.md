@@ -232,7 +232,24 @@ Upon investigation, you discover that the bottleneck in responding to customer r
 <a name="?"></a>
 ## CHAPTER 8: Data Distribution Shifts and Monitoring
 
-1. An important lesson: Deploying a model isn’t the end of the process. A model’s performance degrades over time in production. Once a model has been deployed, we still have to continually monitor its performance to detect issues as well as deploy updates to fix these issues.
+1. **An important lesson**: Deploying a model isn’t the end of the process. A model’s performance degrades over time in production. Once a model has been deployed, we still have to continually monitor its performance to detect issues as well as deploy updates to fix these issues.
 
-2. 
+2. **Causes of ML System Failures**: Before we identify the cause of ML system failures, let’s briefly discuss what an ML system failure is. A **failure happens when one or more expectations of the system is violated**. In traditional software, we mostly care about a **system’s operational expectations**: whether the system executes its logic within the expected operational metrics, e.g., **latency and throughput.** For an ML system, we care about **both its operational metrics and its ML performance metrics**. For example, consider an English-French machine translation system. Its operational expectation might be that, given an English sentence, the system returns a French translation within a one-second latency. Its ML performance expectation is that the returned translation is an accurate translation of the original English sentence 99% of the time.
 
+Operational expectation violations are easier to detect, as they’re usually accompanied by an operational breakage such as a 
+- timeout,
+- a 404 error on a webpage,
+- an out-of-memory error,
+- or a segmentation fault.
+
+However, ML performance expectation violations are harder to detect as doing so requires measuring and monitoring the performance of ML models in production. In the preceding example of the English- French machine translation system, detecting whether the returned translations are correct 99% of the time is difficult if we don’t know what the correct translations are supposed to be. There are countless examples of Google Translate’s painfully
+wrong translations being used by users because they aren’t aware that these are wrong translations. For this reason, we say that **ML systems often fail silently.**
+
+To effectively detect and fix ML system failures in production, it’s useful to understand why a model, after proving to work well during development, would fail in production. We’ll examine two types of failures: software system failures and ML-specific failures.
+
+3. **Software system failures**:
+   
+- Dependency failure,
+- Deployment failure (Failures caused by deployment errors, such as when you accidentally deploy the binaries of an older version of your model instead of the current version, or when your systems don’t have the right permissions to read or write certain files.)
+- Hardware failure, and
+- Downtime or crashing 
