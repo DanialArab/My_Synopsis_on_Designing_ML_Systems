@@ -266,6 +266,13 @@ A reason for the prevalence of software system failures is that because ML adopt
 
 ML-specific failures are failures specific to ML systems. Examples include data collection and processing problems, poor hyperparameters, changes in the training pipeline not correctly replicated in the inference pipeline and vice versa, data distribution shifts that cause a model’s performance to deteriorate over time, edge cases, and degenerate feedback loops.
 
-In this chapter, we’ll focus on addressing ML-specific failures. Even though they account for a small portion of failures, they can be more dangerous than non-ML failures as they’re hard to detect and fix, and they can prevent ML systems from being used altogether. We’ve covered data problems in great detail in Chapter 4, hyperparameter tuning in Chapter 6, and the danger of having two separate pipelines for training and inference in Chapter 7. In this chapter, we’ll discuss three new but very common problems that arise after a model has been deployed: production data differing from training data, edge cases, and degenerate feedback loops.
+In this chapter, we’ll focus on addressing ML-specific failures. Even though they account for a small portion of failures, they can be more dangerous than non-ML failures as they’re hard to detect and fix, and they can prevent ML systems from being used altogether. We’ve covered data problems in great detail in Chapter 4, hyperparameter tuning in Chapter 6, and the danger of having two separate pipelines for training and inference in Chapter 7. In this chapter, we’ll discuss three new but very common problems that arise after a model has been deployed: 
 
-Production data differing from training data HERE
+- production data differing from training data,
+- edge cases, and
+- degenerate feedback loops.
+
+6. **Production data differing from training data**
+
+HERE
+
