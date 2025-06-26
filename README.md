@@ -274,5 +274,38 @@ In this chapter, we’ll focus on addressing ML-specific failures. Even though t
 
 6. **Production data differing from training data**
 
-HERE
+When we say that an ML model learns from the training data, it means that the model **learns the underlying distribution of the training data with the goal of leveraging this learned distribution to generate accurate predictions** for unseen data—data that it didn’t see during training.
 
+One of the first things I learned in ML courses is that it’s **essential for the training data and the unseen data to come from a similar distribution**. The assumption is that the unseen data comes from a **stationary distribution that is the same as the training data distribution**. If the unseen data comes from a different distribution, the model might not generalize well.
+
+This assumption is incorrect in most cases for two reasons:
+
+- First, the underlying distribution of the real-world data is unlikely to be the same as the underlying distribution of the training data. Curating a training dataset that can accurately represent the data that a model will encounter in production turns out to be very difficult. Real-world data is multifaceted and, in many cases, virtually infinite, **whereas training data is finite and constrained by the time, compute, and human resources available during the dataset creation and processing**. There are many different selection and sampling biases, as discussed in Chapter 4, that can happen and make real-world data diverge from training data. The divergence can be something as minor as real-world data using a different type of encoding of emojis. This type of divergence leads to a common failure mode known as the **train-serving skew: a model that does great in development but performs poorly when deployed.**
+
+- Second, the real world **isn’t stationary**. Things change. Data distributions shift. In 2019, when people searched for Wuhan, they likely wanted to get travel information, but since COVID-19, when people search for Wuhan, they likely want to know about the place where COVID-19 originated. Another common failure mode is that a model does great when first deployed, but its performance degrades over time as the data distribution changes. This failure mode needs to be **continually monitored and detected for as long as a model remains in production.**
+
+When I use COVID-19 as an example that causes data shifts, some people have the impression that data shifts only happen because of **unusual events, which implies they don’t happen often. Data shifts happen all the time, suddenly, gradually, or seasonally**. They can happen suddenly because of a specific event, such as when your existing competitors change their pricing policies and you have to update your price predictions in response, or when you launch your product in a new region, or when a celebrity mentions your product, which causes a surge in new users, and so on. They can happen gradually because social norms, cultures, languages, trends, industries, etc. just change over time. They can also happen due to seasonal variations, such as people might be more likely to request rideshares in the winter when it’s cold and snowy than in the spring.
+
+Due to the complexity of ML systems and the poor practices in deploying them, a large percentage of what might look like data shifts on monitoring dashboards are caused by internal errors, such as bugs in the data pipeline, missing values incorrectly inputted, inconsistencies between the features extracted during training and inference, features standardized using statistics from the wrong subset of data, wrong model version, or bugs in the app interface that force users to change their behaviors.
+
+7. **Edge cases**
+   
+Imagine there existed a self-driving car that can drive you safely 99.99% of the time,
+but the other 0.01% of the time, it might get into a catastrophic accident that can
+leave you permanently injured or even dead.10 Would you use that car?
+If you’re tempted to say no, you’re not alone. An ML model that performs well on
+most cases but fails on a small number of cases might not be usable if these failures
+cause catastrophic consequences. For this reason, major self-driving car companies
+are focusing on making their systems work on edge cases.11
+Edge cases are the data samples so extreme that they cause the model to make
+catastrophic mistakes. Even though edge cases generally refer to data samples drawn
+from the same distribution, if there is a sudden increase in the number of data
+samples in which your model doesn’t perform well, it could be an indication that the
+underlying data distribution has shifted.
+Autonomous vehicles are often used to illustrate how edge cases can prevent an
+ML system from being deployed. But this is also true for any safety-critical application
+such as medical diagnosis, traffic control, e-discovery,12 etc. It can also be true
+for non-safety-critical applications. Imagine a customer service chatbot that gives
+reasonable responses to most of the requests, but sometimes, it spits out outrageously
+racist or sexist content. This chatbot will be a brand risk for any company that wants
+to use it, thus rendering it unusable.
