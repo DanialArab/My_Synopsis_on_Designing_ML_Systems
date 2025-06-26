@@ -253,3 +253,23 @@ To effectively detect and fix ML system failures in production, it’s useful to
 - Deployment failure (Failures caused by deployment errors, such as when you accidentally deploy the binaries of an older version of your model instead of the current version, or when your systems don’t have the right permissions to read or write certain files.)
 - Hardware failure, and
 - Downtime or crashing 
+
+4. Just because some failures are not specific to ML doesn’t mean they’re not important for ML engineers to understand. In 2020, Daniel Papasian and Todd Underwood, two ML engineers at Google, looked at 96 cases where a large ML pipeline at Google broke. They reviewed data from over the previous 15 years to determine the causes
+and found out that 60 out of these 96 failures happened due to causes not directly
+related to ML.4 Most of the issues are related to distributed systems, e.g., where the
+workflow scheduler or orchestrator makes a mistake, or related to the data pipeline,
+e.g., where data from multiple sources is joined incorrectly or the wrong data structures
+are being used.
+Addressing software system failures requires not ML skills, but traditional software
+engineering skills, and addressing them is beyond the scope of this book. Because of
+the importance of traditional software engineering skills in deploying ML systems,
+ML engineering is mostly engineering, not ML.5 For
+
+A reason for the prevalence of software system failures is that because ML adoption
+in the industry is still nascent, tooling around ML production is limited and best
+practices are not yet well developed or standardized. However, as toolings and best
+practices for ML production mature, there are reasons to believe that the proportion
+of software system failures will decrease and the proportion of ML-specific failures
+will increase.
+
+5. **ML-Specific Failures**: 
