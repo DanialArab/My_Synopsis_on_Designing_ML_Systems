@@ -302,9 +302,10 @@ Autonomous vehicles are often used to illustrate how edge cases can prevent an M
    
 You might wonder about the differences between an outlier and an edge case. The definition of what makes an edge case varies by discipline. In ML, because of its recent adoption in production, edge cases are still being discovered, which makes their definition contentious. 
 
-In this book, outliers refer to data: an example that differs significantly from other examples. Edge cases refer to performance: an example where a model performs significantly worse than other examples. An outlier can cause a model to perform unusually poorly, which makes it an edge case. However, not all outliers are edge cases. For example, a person jaywalking on a highway is an outlier, but it’s not an edge case if your self-driving car can accurately detect that person and decide on a motion response appropriately.
+In this book, **outliers refer to data**: an example that differs significantly from other examples. **Edge cases refer to performance**: an example where a **model performs significantly worse than other examples**. **An outlier can cause a model to perform unusually poorly, which makes it an edge case. However, not all outliers are edge cases.** For example, **a person jaywalking on a highway is an outlier, but it’s not an edge case if your self-driving car can accurately detect that person and decide on a motion response appropriately.**
 
 During model development, outliers can negatively affect your model’s performance, as shown in Figure 8-1. In many cases, it might be beneficial to remove outliers as it helps your model to learn better decision boundaries and generalize better to unseen data. However, during inference, you don’t usually have the option to remove or ignore the queries that differ significantly from other queries. You can choose to transform it—for example, when you enter “mechin learnin” into Google Search, Google might ask if you mean “machine learning.” But most likely you’ll want to develop a model so that it can perform well even on unexpected inputs.
 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/figure_8_1.png)
+
 
