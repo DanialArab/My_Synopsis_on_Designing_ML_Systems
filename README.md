@@ -226,3 +226,13 @@ Upon investigation, you discover that the bottleneck in responding to customer r
 
 6. **Types of ML Tasks**: HERE
 
+
+
+
+<a name="?"></a>
+## CHAPTER 8: Data Distribution Shifts and Monitoring
+
+1. An important lesson: Deploying a model isn’t the end of the process. A model’s performance degrades over time in production. Once a model has been deployed, we still have to continually monitor its performance to detect issues as well as deploy updates to fix these issues.
+
+2. 
+
