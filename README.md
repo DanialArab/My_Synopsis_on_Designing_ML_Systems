@@ -2,7 +2,7 @@
 
 Here are my highlighted notes from the book.
 
-1. [CHAPTER 1: Overview of Machine Learning Systems](#1)
+1. [CHAPTER 1: Overview of Machine Learning Systems](#1) 
 2. [CHAPTER 2: Introduction to Machine Learning Systems Design](#2)
 3. [CHAPTER 3: Data Engineering Fundamentals](#3)
 4. [CHAPTER 4: Training Data](#4)
