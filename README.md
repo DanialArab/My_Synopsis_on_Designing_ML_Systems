@@ -318,4 +318,6 @@ To make this concrete, imagine you build a system to recommend to users songs th
 
 For the task of recommender systems, it’s possible to detect degenerate feedback loops by measuring the popularity diversity of a system’s outputs even when the system is offline. An item’s popularity can be measured based on how many times it has been interacted with (e.g., seen, liked, bought, etc.) in the past. The popularity of all the items will likely follow a long-tail distribution: a small number of items are interacted with a lot, while most items are rarely interacted with at all. Various metrics such as aggregate diversity and average coverage of long-tail items proposed by Brynjolfsson et al. (2011), Fleder and Hosanagar (2009), and Abdollahpouri et al. (2019) can help you measure the diversity of the outputs of a recommender system.15 Low scores mean that the outputs of your system are homogeneous, which might be caused by popularity bias.
 
-11. **Correcting degenerate feedback loops.**
+11. **Correcting degenerate feedback loops.** Because degenerate feedback loops are a common problem, there are many proposed methods on how to correct them. In this chapter, we’ll discuss two methods. The first one is to use **randomization, and the second one is to use positional features.**
+
+12. **Randomization** 
