@@ -354,6 +354,41 @@ In the previous section, we discussed common causes for ML system failures. In t
 
 15. **Types of Data Distribution Shifts**:
 
+While data distribution shift is often used interchangeably with 
+- concept drift and
+- covariate shift and occasionally
+- label shift,
+
+these are three distinct subtypes of data shift. Note that this discussion on different types of data shifts is math-heavy and mostly useful from a research perspective: to develop efficient algorithms to detect and address data shifts requires understanding the causes of those shifts. **In production, when encountering a distribution shift, data scientists don’t usually stop to wonder what type of shift it is. They mostly care about what they can do to handle this shift.**
+
+16. **Covariate shift**
+    
+When P(X) changes but P(Y|X) remains the same. This refers to the first decomposition of the joint distribution.
+
+In statistics, **a covariate is an independent variable that can influence the outcome of a given statistical trial but which is not of direct interest**. Consider that you are running an experiment to determine how locations affect the housing prices. The housing price variable is your direct interest, but you know the square footage affects the price, so the square footage is a covariate. In supervised ML, the label is the variable of direct interest, and the input features are covariate variables.
+
+Mathematically, covariate shift is when P(X) changes, but P(Y|X) remains the same, which means that the distribution of the input changes, but the conditional probability of an output given an input remains the same.
+
+During model development, covariate shifts can happen due to biases during the data selection process, which could result from difficulty in collecting examples for certain classes. For example, suppose that to study breast cancer, you get data from a clinic where women go to test for breast cancer. Because people over 40 are encouraged by their doctors to get checkups, your data is dominated by women over 40. For this reason, covariate shift is closely related to the sample selection bias problem.
+
+Covariate shifts can also happen because the training data is artificially altered to make it easier for your model to learn. As discussed in Chapter 4, it’s hard for ML models to learn from **imbalanced datasets**, so you might want to collect more samples of the rare classes or oversample your data on the rare classes to make it easier for your model to learn the rare classes.
+
+Covariate shift can also be caused by the model’s learning process, especially through active learning. In Chapter 4, we defined active learning as follows: instead of randomly selecting samples to train a model on, we use the samples most helpful to that model according to some heuristics. This means that the training input distribution is altered by the learning process to differ from the real-world input distribution, and covariate shifts are a by-product. 
+
+In production, covariate shift usually happens because of major changes in the environment or in the way your application is used. Imagine you have a model to predict how likely a free user will be to convert to a paid user. The income level of the user is a feature. Your company’s marketing department recently launched a campaign that attracts users from a demographic more affluent than your current demographic. The input distribution into your model has changed, but the probability that a user with a given income level will convert remains the same.
+
+If you know in advance how the real-world input distribution will differ from your training input distribution, you can leverage techniques such as **importance weighting** to train your model to work for the real-world data. Importance weighting consists of two steps: estimate the density ratio between the real-world input distribution and the training input distribution, then weight the training data according to this ratio and train an ML model on this weighted data.
+
+However, because we don’t know in advance how the distribution will change in the real world, it’s very difficult to preemptively train your models to make them robust to new, unknown distributions. There has been research that attempts to help models learn representations of latent variables that are invariant across data distributions, but I’m not aware of their adoption in the industry.
+
+17. **Label shift**
+    
+When P(Y) changes but P(X|Y) remains the same. This refers to the second decomposition of the joint distribution.
+
+18. **Concept drift**
+    
+When P(Y|X) changes but P(X) remains the same. This refers to the first decomposition of the joint distribution.
+
 
 
 <a name="9"></a>
