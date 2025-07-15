@@ -227,9 +227,24 @@ Upon investigation, you discover that the bottleneck in responding to customer r
 6. **Types of ML Tasks**: HERE
 
 
+<a name="3"></a>
+## CHAPTER 3: Data Engineering Fundamentals
+
+<a name="4"></a>
+## CHAPTER 4: Training Data
+
+<a name="5"></a>
+## CHAPTER 5: Feature Engineering
+
+<a name="6"></a>
+## CHAPTER 6: Model Development and Offline Evaluation
+
+<a name="7"></a>
+## CHAPTER 7:Model Deployment and Prediction Service
 
 
-<a name="?"></a>
+
+<a name="8"></a>
 ## CHAPTER 8: Data Distribution Shifts and Monitoring
 
 1. **An important lesson**: Deploying a model isn’t the end of the process. A model’s performance degrades over time in production. Once a model has been deployed, we still have to continually monitor its performance to detect issues as well as deploy updates to fix these issues.
@@ -341,3 +356,12 @@ In the previous section, we discussed common causes for ML system failures. In t
 15. **Types of Data Distribution Shifts**:
 
 
+
+<a name="9"></a>
+## CHAPTER 9: Continual Learning and Test in Production
+
+<a name="10"></a>
+## CHAPTER 10: Infrastructure and Tooling for MLOps
+
+<a name="11"></a>
+## CHAPTER 11: The Human Side of Machine Learning
