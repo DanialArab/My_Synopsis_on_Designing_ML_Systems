@@ -346,7 +346,6 @@ We’ve discussed that **degenerate feedback loops can cause a system’s output
 We’ve also discussed that degenerate feedback loops are caused by users’ feedback on predictions, and users’ feedback on a prediction is biased based on **where it is shown.** Consider the preceding recommender system example, where each time you recommend five songs to users. You realize that the top recommended song is much more likely to be clicked on compared to the other four songs. You are unsure whether your model is exceptionally good at picking the top song, or whether users click on any song as long as it’s recommended on top.
 
 
-
 **If the position in which a prediction is shown affects its feedback in any way, you might want to encode the position information using positional features**. Positional features can be **numerical (e.g., positions are 1, 2, 3,...) or Boolean (e.g., whether a prediction is shown in the first position or not).**
 
 14. **Data distribution shifts**
