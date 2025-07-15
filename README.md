@@ -428,7 +428,6 @@ In many cases, **concept drifts are cyclic or seasonal**. For example, rideshare
 
 
 
-
 <a name="9"></a>
 ## CHAPTER 9: Continual Learning and Test in Production
 
