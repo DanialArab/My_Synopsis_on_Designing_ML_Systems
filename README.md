@@ -381,13 +381,51 @@ If you know in advance how the real-world input distribution will differ from yo
 
 However, because we don’t know in advance how the distribution will change in the real world, it’s very difficult to preemptively train your models to make them robust to new, unknown distributions. There has been research that attempts to help models learn representations of latent variables that are invariant across data distributions, but I’m not aware of their adoption in the industry.
 
-17. **Label shift**
+17. **Label shift, also known as prior shift, prior probability shift, or target shift**
     
 When P(Y) changes but P(X|Y) remains the same. This refers to the second decomposition of the joint distribution.
 
-18. **Concept drift**
+You can think of this as the case when the output distribution changes but, for a given output, the input distribution stays the same.
+
+Remember that covariate shift is when the input distribution changes. When the input distribution changes, the output distribution also changes, resulting in both covariate shift and label shift happening at the same time.
+
+However, not all covariate shifts result in label shifts. It’s a subtle point, so we’ll consider another example.
+
+Because label shift is closely related to covariate shift, methods for detecting and adapting models to label shifts are similar to covariate shift adaptation methods. We’ll discuss them more later in this chapter.
+
+18. **Concept drift also known as posterior shift**
     
 When P(Y|X) changes but P(X) remains the same. This refers to the first decomposition of the joint distribution.
+
+Concept drift, also known as posterior shift, is when the input distribution remains the same but the conditional distribution of the output given an input changes. You can think of this as **“same input, different output.”** Consider you’re in charge of a model that predicts the price of a house based on its features. Before COVID-19, a three-bedroom apartment in San Francisco could cost $2,000,000. However, at the beginning of COVID-19, many people left San Francisco, so the same apartment would cost only $1,500,000. So even though the distribution of house features remains the same, the conditional distribution of the price of a house given its features has changed.
+
+In many cases, **concept drifts are cyclic or seasonal**. For example, rideshare prices will fluctuate on weekdays versus weekends, and flight ticket prices rise during holiday seasons. Companies might have different models to deal with cyclic and seasonal drifts. For example, they might have one model to predict rideshare prices on weekdays and another model for weekends.
+
+
+19. **General Data Distribution Shifts**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
