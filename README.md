@@ -1,6 +1,6 @@
 # My Synopsis on Designing Machine Learning System An Iterative Process for Production-Ready Applications by Chip Huyen 
 
-Here are my highlighted notes from the book.
+Here are my highlighted notes from the book. 
 
 1. [CHAPTER 1: Overview of Machine Learning Systems](#1) 
 2. [CHAPTER 2: Introduction to Machine Learning Systems Design](#2)
