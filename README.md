@@ -522,7 +522,11 @@ your data before performing a two-sample test on it.36**
 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/Fig_8_2_drify_detectio_algos.png)
 
-21. 
+21. **Time scale windows for detecting shifts**
+
+HERE
+
+
 
 
 
