@@ -476,6 +476,8 @@ In the industry, most drift detection methods focus on detecting **changes in th
 
 
 
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/Fig_8_2_drify_detectio_algos.png)
+
 
 
 
