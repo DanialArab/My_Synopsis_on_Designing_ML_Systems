@@ -635,9 +635,44 @@ are still caused by **human errors**. If your model failure is caused by human e
 you’d first need to find those errors to fix them. Detecting a data shift is hard, but
 determining what causes a shift can be even harder.
 
-23. 
+23. **Monitoring and Observability**
 
+Monitoring and observability are sometimes used exchangeably, but they are different.
+**Monitoring refers to the act of tracking, measuring, and logging different metrics
+that can help us determine when something goes wrong**. Observability means **setting
+up our system in a way that gives us visibility into our system to help us investigate
+what went wrong**. The process of setting up our system in this way is also called
+**“instrumentation.”** Examples of instrumentation are **adding timers to your functions,
+counting NaNs in your features, tracking how inputs are transformed through your
+systems, logging unusual events such as unusually long inputs, etc**. **Observability is
+part of monitoring. Without some level of observability, monitoring is impossible.**
 
+24. **Monitoring**
+
+Monitoring is **all about metrics**. Because ML systems are software systems, the first
+class of metrics you’d need to monitor are the **operational metrics.** These metrics are
+designed to convey the **health of your systems**. They are generally divided into **three
+levels: the network the system is run on, the machine the system is run on, and the
+application that the system runs.** Examples of these metrics are **latency; throughput;
+the number of prediction requests your model receives in the last minute, hour,
+day; the percentage of requests that return with a 2xx code; CPU/GPU utilization;
+memory utilization; etc**. No matter how good your ML model is, if the system is
+down, you’re not going to benefit from it.
+
+Let’s look at an example. One of the most important characteristics of a software
+system in production is **availability—how often the system is available to offer
+reasonable performance to users**. This characteristic is measured by **uptime, the
+percentage of time a system is up.** The &&conditions to determine whether a system
+is up are defined in the service level objectives (SLOs) or service level agreements
+(SLAs)&&. For example, an SLA may specify that the service is considered to be up if it
+has a median latency of less than 200 ms and a 99th percentile under 2 s.
+
+However, for ML systems, the system health extends beyond the system uptime. If
+your ML system is up but its predictions are garbage, your users aren’t going to be
+happy. Another class of metrics you’d want to monitor are ML-specific metrics that
+tell you the health of your ML models.
+
+25. **ML-Specific Metrics**
 
 
 
