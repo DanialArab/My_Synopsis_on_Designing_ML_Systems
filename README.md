@@ -441,7 +441,9 @@ There’s no rule that says that only one type of shift should happen at one tim
 model might suffer from multiple types of drift, which makes handling them a lot
 more difficult.
 
- 
+ 20. **Detecting Data Distribution Shifts**
+
+
 
 
 
