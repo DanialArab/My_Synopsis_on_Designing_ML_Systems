@@ -422,6 +422,7 @@ With regression tasks, label schema change could happen because of changes in th
 possible range of label values. Imagine you’re building a model to predict someone’s
 credit score. Originally, you used a credit score system that ranged from 300 to 850,
 but you switched to a new system that ranges from 250 to 900.
+
 With classification tasks, label schema change could happen because you have new
 classes. For example, suppose you are building a model to diagnose diseases and
 there’s a new disease to diagnose. Classes can also become outdated or more finegrained.
@@ -435,6 +436,7 @@ structure might change,29 and you might need to both relabel your data and
 retrain your model from scratch. Label schema change is especially common with
 high-cardinality tasks—tasks with a high number of classes—such as product or
 documentation categorization.
+
 There’s no rule that says that only one type of shift should happen at one time. A
 model might suffer from multiple types of drift, which makes handling them a lot
 more difficult.
