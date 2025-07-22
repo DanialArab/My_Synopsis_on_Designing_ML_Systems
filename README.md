@@ -418,18 +418,26 @@ a task describes the structure of the labels of that task. For example, a dictio
 maps from a class to an integer value, such as {“POSITIVE”: 0, “NEGATIVE”: 1}, is a
 schema.
 
-One is feature change, such as when new features are added, older features are
-removed, or the set of all possible values of a feature changes.28 For example, your
-model was using years for the “age” feature, but now it uses months, so the range
-of this feature’s values has drifted. One time, our team realized that our model’s
-performance plummeted because a bug in our pipeline caused a feature to become
-NaNs (short for “not a number”).
-Label schema change is when the set of possible values for Y change. With label shift,
-P(Y) changes but P(X|Y) remains the same. With label schema change, both P(Y) and
-P(X|Y) change. A schema describes the structure of the data, so the label schema of
-a task describes the structure of the labels of that task. For example, a dictionary that
-maps from a class to an integer value, such as {“POSITIVE”: 0, “NEGATIVE”: 1}, is a
-schema.
+With regression tasks, label schema change could happen because of changes in the
+possible range of label values. Imagine you’re building a model to predict someone’s
+credit score. Originally, you used a credit score system that ranged from 300 to 850,
+but you switched to a new system that ranges from 250 to 900.
+With classification tasks, label schema change could happen because you have new
+classes. For example, suppose you are building a model to diagnose diseases and
+there’s a new disease to diagnose. Classes can also become outdated or more finegrained.
+Imagine that you’re in charge of a sentiment analysis model for tweets
+that mention your brand. Originally, your model predicted only three classes: POSITIVE,
+NEGATIVE, and NEUTRAL. However, your marketing department realized
+the most damaging tweets are the angry ones, so they wanted to break the NEGATIVE
+class into two classes: SAD and ANGRY. Instead of having three classes,
+your task now has four classes. When the number of classes changes, your model’s
+structure might change,29 and you might need to both relabel your data and
+retrain your model from scratch. Label schema change is especially common with
+high-cardinality tasks—tasks with a high number of classes—such as product or
+documentation categorization.
+There’s no rule that says that only one type of shift should happen at one time. A
+model might suffer from multiple types of drift, which makes handling them a lot
+more difficult.
 
  
 
