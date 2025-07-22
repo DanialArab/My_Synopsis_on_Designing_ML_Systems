@@ -572,6 +572,69 @@ chunks into daily views.
 
 22. **Addressing Data Distribution Shifts**
 
+How companies address data shifts depends on how sophisticated their ML infrastructure
+setups are.
+
+At the same time, many companies assume that data shifts are inevitable, so they
+periodically retrain their models—once a month, once a week, or once a day—regardless
+of the extent of the shift. How to determine the optimal frequency to retrain
+your models is an important decision that many companies still determine based on
+**gut feelings instead of experimental data**.41
+
+To make a model work with a new distribution in production, there are **three main
+approaches.**
+
+The **first** is the approach that currently dominates research: train models
+using massive datasets. The hope here is that if the training dataset is large enough,
+the model will be able to learn such a comprehensive distribution that whatever data
+points the model will encounter in production will likely come from this distribution.
+
+The **second** approach, less popular in research, is to adapt a trained model to a target
+distribution without requiring new labels. However,
+this area of research is heavily underexplored and hasn’t found wide adoption in
+industry.44
+
+The **third** approach is what is usually done in the industry today: **retrain your model
+using the labeled data from the target distribution**. However, retraining your model is
+not so straightforward. Retraining can mean retraining your model from scratch on
+both the old and new data or continuing training the existing model on new data. The
+latter approach is also called fine-tuning.
+
+If you want to retrain your model, there are two questions. First, whether to train
+your model from scratch (**stateless retraining**) or continue training it from the last
+checkpoint (**stateful training**). Second, what data to use: data from the last 24 hours,
+last week, last 6 months, or from the point when data has started to drift. **You might
+need to run experiments to figure out which retraining strategy works best for you.**
+
+**Addressing data distribution shifts doesn’t have to start after the shifts have happened.**
+It’s possible **to design your system to make it more robust to shifts.** A system
+uses multiple features, and different features shift at different rates. Consider that
+you’re building a model to predict whether a user will download an app. You might
+be tempted to use that app’s ranking in the app store as a feature since higher-ranking
+apps tend to be downloaded more. However, app ranking changes very quickly. You
+might want to instead bucket each app’s ranking into general categories such as top
+10, between 11 and 100, between 101 and 1,000, between 1,001 and 10,000, and
+so on. At the same time, an app’s categories might change a lot less frequently, but
+they might have less power to predict whether a user will download that app. **When
+choosing features for your models, you might want to consider the trade-off between
+the performance and the stability of a feature: a feature might be really good for
+accuracy but deteriorate quickly, forcing you to train your model more often.**
+
+You might also want to **design your system to make it easier for it to adapt to
+shifts.** For example, housing prices might change a lot faster in major cities like
+San Francisco than in rural Arizona, so a housing price prediction model serving
+rural Arizona might need to be updated less frequently than a model serving San
+Francisco. If you use the same model to serve both markets, you’ll have to use data
+from both markets to update your model at the rate demanded by San Francisco.
+However, if you use a separate model for each market, you can update each of them
+only when necessary.
+
+Before we move on to the next section, I want to **reiterate that not all performance
+degradation of models in production requires ML solutions**. Many ML failures today
+are still caused by **human errors**. If your model failure is caused by human errors,
+you’d first need to find those errors to fix them. Detecting a data shift is hard, but
+determining what causes a shift can be even harder.
+
 23. 
 
 
