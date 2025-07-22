@@ -404,7 +404,7 @@ In many cases, **concept drifts are cyclic or seasonal**. For example, rideshare
 
 19. **General Data Distribution Shifts**
 
-One of the general data distribution shodts is **feature change**, such as when new features are added, older features are
+One of the general data distribution shifts is **feature change**, such as when new features are added, older features are
 removed, or the set of all possible values of a feature changes.28 For example, your
 model was using years for the “age” feature, but now it uses months, so the range
 of this feature’s values has drifted. One time, our team realized that our model’s
