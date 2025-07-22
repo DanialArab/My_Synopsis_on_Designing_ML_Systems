@@ -404,7 +404,31 @@ In many cases, **concept drifts are cyclic or seasonal**. For example, rideshare
 
 19. **General Data Distribution Shifts**
 
+One is feature change, such as when new features are added, older features are
+removed, or the set of all possible values of a feature changes.28 For example, your
+model was using years for the “age” feature, but now it uses months, so the range
+of this feature’s values has drifted. One time, our team realized that our model’s
+performance plummeted because a bug in our pipeline caused a feature to become
+NaNs (short for “not a number”).
+Label schema change is when the set of possible values for Y change. With label shift,
+P(Y) changes but P(X|Y) remains the same. With label schema change, both P(Y) and
+P(X|Y) change. A schema describes the structure of the data, so the label schema of
+a task describes the structure of the labels of that task. For example, a dictionary that
+maps from a class to an integer value, such as {“POSITIVE”: 0, “NEGATIVE”: 1}, is a
+schema.
 
+One is feature change, such as when new features are added, older features are
+removed, or the set of all possible values of a feature changes.28 For example, your
+model was using years for the “age” feature, but now it uses months, so the range
+of this feature’s values has drifted. One time, our team realized that our model’s
+performance plummeted because a bug in our pipeline caused a feature to become
+NaNs (short for “not a number”).
+Label schema change is when the set of possible values for Y change. With label shift,
+P(Y) changes but P(X|Y) remains the same. With label schema change, both P(Y) and
+P(X|Y) change. A schema describes the structure of the data, so the label schema of
+a task describes the structure of the labels of that task. For example, a dictionary that
+maps from a class to an integer value, such as {“POSITIVE”: 0, “NEGATIVE”: 1}, is a
+schema.
 
  
 
