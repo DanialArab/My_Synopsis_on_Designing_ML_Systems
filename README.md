@@ -443,7 +443,31 @@ more difficult.
 
  20. **Detecting Data Distribution Shifts**
 
+Data distribution shifts are only a problem if they cause **your model’s performance
+to degrade**. So the first idea might be to monitor your **model’s accuracy-related metrics—
+accuracy, F1 score, recall, AUC-ROC, etc.—in production to see whether they
+have changed.** “Change” here usually means **“decrease,”** but if my model’s accuracy
+suddenly goes up or fluctuates significantly for no reason that I’m aware of, I’d want
+to **investigate.**
 
+Accuracy-related metrics work by comparing the model’s predictions to ground truth
+labels.30 During model development, you have access to labels, **but in production,
+you don’t always have access to labels, and even if you do, labels will be delayed,** as
+discussed in the section “Natural Labels” on page 91. Having access to labels within a
+reasonable time window will vastly help with giving you visibility into your model’s
+performance.
+
+When ground truth labels are unavailable or too delayed to be useful, we can monitor
+other distributions of interest instead. The **distributions of interest are the input
+distribution P(X), the label distribution P(Y), and the conditional distributions P(X|
+Y) and P(Y|X).**
+
+While we don’t need to know the ground truth labels Y to monitor the **input distribution,
+monitoring the label distribution and both of the conditional distributions
+require knowing Y.** 
+
+In the industry, most drift detection methods focus on detecting **changes in the input distribution,** especially the
+**distributions of features**, as we discuss in detail in this chapter.
 
 
 
