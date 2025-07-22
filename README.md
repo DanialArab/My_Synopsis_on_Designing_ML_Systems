@@ -423,8 +423,8 @@ possible range of label values. Imagine you’re building a model to predict som
 credit score. Originally, you used a credit score system that ranged from 300 to 850,
 but you switched to a new system that ranges from 250 to 900.
 
-With classification tasks, label schema change could happen because you have new
-classes. For example, suppose you are building a model to diagnose diseases and
+With classification tasks, **label schema change could happen because you have new
+classes.** For example, suppose you are building a model to diagnose diseases and
 there’s a new disease to diagnose. Classes can also become outdated or more finegrained.
 Imagine that you’re in charge of a sentiment analysis model for tweets
 that mention your brand. Originally, your model predicted only three classes: POSITIVE,
@@ -469,16 +469,60 @@ require knowing Y.**
 In the industry, most drift detection methods focus on detecting **changes in the input distribution,** especially the
 **distributions of features**, as we discuss in detail in this chapter.
 
+**20.1. Statistical methods**
 
+In industry, a simple method many companies use to detect whether the two distributions
+are the same is to **compare their statistics like min, max, mean, median,
+variance, various quantiles (such as 5th, 25th, 75th, or 95th quantile), skewness,
+kurtosis, etc**. For example, you can compute the median and variance of the values
+of a feature during inference and compare them to the metrics computed during
+training. 
 
+This is a good start, but these
+metrics are far from sufficient.31 Mean, median, and variance are only useful with
+the distributions for which the mean/median/variance are useful summaries. If those
+metrics differ significantly, the inference distribution might have shifted from the
+training distribution. **However, if those metrics are similar, there’s no guarantee that
+there’s no shift.**
 
+A **more sophisticated solution is to use a two-sample hypothesis test, shortened as
+two-sample test.** It’s a test to determine whether the difference between two populations
+(two sets of data) is statistically significant. **If the difference is statistically
+significant, then the probability that the difference is a random fluctuation due to
+sampling variability is very low, and, therefore, the difference is caused by the fact
+that these two populations come from two distinct distributions.** If you consider the
+data from yesterday to be the source population and the data from today to be the
+target population and they are statistically different, it’s likely that the underlying data
+distribution has shifted between yesterday and today.
 
+A caveat is that just because the difference is statistically significant doesn’t mean that
+it is practically important. However, a good heuristic is that if you are able to detect
+the difference from a relatively small sample, then it is probably a serious difference.
+If it takes a huge number of samples to detect, then the difference is probably not
+worth worrying about.
 
+**A basic two-sample test is the Kolmogorov–Smirnov test, also known as the K-S
+or KS test.** It’s a **nonparametric statistical test, which means it doesn’t require any
+parameters of the underlying distribution to work**. It doesn’t make any assumption
+about the underlying distribution, which means it can work for any distribution.
+However, one major drawback of the KS test is that it can only be used for **onedimensional
+data.** If your model’s predictions and labels are one-dimensional (scalar
+numbers), then the KS test is useful to detect label or prediction shifts. However, it
+won’t work for high-dimensional data, and features are usually high-dimensional.33
+KS tests can also be expensive and produce too many false positive alerts.34
 
+Another test is **Least-Squares Density Difference,** an algorithm that is based on the
+least squares density-difference estimation method.35 There is also MMD, Maximum
+Mean Discrepancy (Gretton et al. 2012), a kernel-based technique for multivariate
+two-sample testing and its variant Learned Kernel MMD (Liu et al. 2020). Alibi Detect is a great open source package with the
+implementations of many drift detection algorithms, as shown in Figure 8-2.
+**Because two-sample tests often work better on low-dimensional data than on highdimensional
+data, it’s highly recommended that you reduce the dimensionality of
+your data before performing a two-sample test on it.36**
 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/Fig_8_2_drify_detectio_algos.png)
 
-
+21. 
 
 
 
