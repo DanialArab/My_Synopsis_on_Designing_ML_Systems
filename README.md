@@ -674,6 +674,20 @@ tell you the health of your ML models.
 
 25. **ML-Specific Metrics**
 
+Within ML-specific metrics, there are generally four artifacts to monitor: a model’s
+accuracy-related metrics, predictions, features, and raw inputs.
+These are artifacts
+generated at four different stages of an ML system pipeline, as shown in Figure 8-5.
+The deeper into the pipeline an artifact is, the more transformations it has gone
+through, which makes a change in that artifact more likely to be caused by errors
+in one of those transformations. However, the more transformations an artifact has
+gone through, the more structured it’s become and the closer it is to the metrics you
+actually care about, which makes it easier to monitor.
+
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_8_5.png)
+
+
+
 
 
 
