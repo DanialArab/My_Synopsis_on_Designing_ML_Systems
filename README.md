@@ -686,8 +686,23 @@ actually care about, which makes it easier to monitor.
 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_8_5.png)
 
+26. **Monitoring accuracy-related metrics**
+HERE
+If your system receives any type of user feedback for the predictions it makes—
+click, hide, purchase, upvote, downvote, favorite, bookmark, share, etc.—you should
+definitely log and track it. Some feedback can be used to infer natural labels, which
+can then be used to calculate your model’s accuracy-related metrics. Accuracy-related
+metrics are the most direct metrics to help you decide whether a model’s performance
+has degraded.
 
-
+Even if the feedback can’t be used to infer natural labels directly, it can be used to
+detect changes in your ML model’s performance. For example, when you’re building
+a system to recommend to users what videos to watch next on YouTube, you want to
+track not only whether the users click on a recommended video (click-through rate),
+but also the duration of time users spend on that video and whether they complete
+watching it (completion rate). If, over time, the click-through rate remains the same
+but the completion rate drops, it might mean that your recommender system is
+getting worse.
 
 
 
