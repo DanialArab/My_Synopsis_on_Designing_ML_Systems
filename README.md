@@ -687,10 +687,10 @@ actually care about, which makes it easier to monitor.
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_8_5.png)
 
 26. **Monitoring accuracy-related metrics**
-HERE
-If your system receives any type of user feedback for the predictions it makes—
+
+**If your system receives any type of user feedback for the predictions it makes—
 click, hide, purchase, upvote, downvote, favorite, bookmark, share, etc.—you should
-definitely log and track it. Some feedback can be used to infer natural labels, which
+definitely log and track it**. Some feedback can be used to infer natural labels, which
 can then be used to calculate your model’s accuracy-related metrics. Accuracy-related
 metrics are the most direct metrics to help you decide whether a model’s performance
 has degraded.
@@ -700,11 +700,39 @@ detect changes in your ML model’s performance. For example, when you’re buil
 a system to recommend to users what videos to watch next on YouTube, you want to
 track not only whether the users click on a recommended video (click-through rate),
 but also the duration of time users spend on that video and whether they complete
-watching it (completion rate). If, over time, the click-through rate remains the same
+watching it (**completion rate**). **If, over time, the click-through rate remains the same
 but the completion rate drops, it might mean that your recommender system is
-getting worse.
+getting worse.**
 
+It’s also possible to **engineer your system so that you can collect users’ feedback.**
+For example, Google Translate has the option for users to upvote or downvote a
+translation, as shown in Figure 8-6. If the number of downvotes the system receives
+suddenly goes up, there might be issues. These downvotes can also be used to guide
+the labeling process, such as getting human experts to generate new translations for
+the samples with downvotes, to train the next iteration of their models.
 
+27. **Monitoring features**
+
+ML monitoring solutions in the industry focus on tracking changes in features, both
+the features that a model uses as inputs and the intermediate transformations from
+raw inputs into final features. Feature monitoring is appealing because compared to
+raw input data, features are well structured following a predefined schema. The first
+step of feature monitoring is feature validation: ensuring that your features follow an
+expected schema. The expected schemas are usually generated from training data or
+from common sense. If these expectations are violated in production, there might be
+a shift in the underlying distribution. For example, here are some of the things you
+can check for a given feature:
+
+• If the min, max, or median values of a feature are within an acceptable range
+• If the values of a feature satisfy a regular expression format
+• If all the values of a feature belong to a predefined set
+• If the values of a feature are always greater than the values of another feature
+
+Because features are often organized into tables—each column representing a feature
+and each row representing a data sample—feature validation is also known as table
+testing or table validation. Some call them unit tests for data. There are many open
+source libraries that help you do basic feature validation, and the two most common
+are Great Expectations and Deequ, which is by AWS.
 
 
 
