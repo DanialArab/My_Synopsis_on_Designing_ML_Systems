@@ -714,27 +714,73 @@ the samples with downvotes, to train the next iteration of their models.
 27. **Monitoring features**
 
 ML monitoring solutions in the industry focus on tracking changes in features, both
-the features that a model uses as inputs and the intermediate transformations from
-raw inputs into final features. Feature monitoring is appealing because compared to
+the **features that a model uses as inputs and the intermediate transformations from
+raw inputs into final features**. Feature monitoring is appealing because compared to
 raw input data, features are well structured following a predefined schema. The first
-step of feature monitoring is feature validation: ensuring that your features follow an
-expected schema. The expected schemas are usually generated from training data or
+step of feature monitoring is **feature validation: ensuring that your features follow an
+expected schema**. The expected schemas are usually generated from training data or
 from common sense. If these expectations are violated in production, there might be
 a shift in the underlying distribution. For example, here are some of the things you
 can check for a given feature:
 
-• If the min, max, or median values of a feature are within an acceptable range
-• If the values of a feature satisfy a regular expression format
-• If all the values of a feature belong to a predefined set
-• If the values of a feature are always greater than the values of another feature
+- If the min, max, or median values of a feature are within an acceptable range
+- If the values of a feature satisfy a regular expression format
+- If all the values of a feature belong to a predefined set
+- If the values of a feature are always greater than the values of another feature
 
-Because features are often organized into tables—each column representing a feature
+Because features are often organized into **tables—each column representing a feature
 and each row representing a data sample—feature validation is also known as table
-testing or table validation. Some call them unit tests for data. There are many open
+testing or table validation**. Some call them **unit tests for data**. There are many open
 source libraries that help you do basic feature validation, and the two most common
-are Great Expectations and Deequ, which is by AWS.
+are **Great Expectations and Deequ, which is by AWS.**
 
+Beyond basic feature validation, you can also use two-sample tests to detect whether
+the underlying distribution of a feature or a set of features has shifted. Since a
+feature or a set of features can be high-dimensional, you might need to reduce their
+dimension before performing the test on them, which can make the test less effective.
 
+28. **Four major concerns when doing feature monitoring**
+
+A. **A company might have hundreds of models in production, and each model uses hundreds, if not thousands, of features.**
+
+Even something as simple as computing summary statistics for all these features
+every hour can be expensive, not only in terms of compute required but also
+memory used. Tracking, i.e., constantly computing, too many metrics can also
+slow down your system and increase both the latency that your users experience
+and the time it takes for you to detect anomalies in your system.
+
+B. **While tracking features is useful for debugging purposes, it’s not very useful for detecting
+model performance degradation.**
+
+In theory, a small distribution shift can cause catastrophic failure, but in practice,
+an individual feature’s minor changes might not harm the model’s performance
+at all. Feature distributions shift all the time, and most of these changes are
+benign.48 If you want to be alerted whenever a feature seems to have drifted,
+you might soon be overwhelmed by alerts and realize that most of these alerts
+are false positives. This can cause a phenomenon called “alert fatigue” where the
+monitoring team stops paying attention to the alerts because they are so frequent.
+The problem of feature monitoring becomes the problem of trying to decide
+which feature shifts are critical and which are not.
+
+C. **Feature extraction is often done in multiple steps (such as filling missing values and
+standardization), using multiple libraries (such as pandas, Spark), on multiple services
+(such as BigQuery or Snowflake).**
+
+You might have a relational database as an input to the feature extraction process
+and a NumPy array as the output. Even if you detect a harmful change in a
+feature, it might be impossible to detect whether this change is caused by a
+change in the underlying input distribution or whether it’s caused by an error in
+one of the multiple processing steps.
+
+D. **The schema that your features follow can change over time.**
+
+If you don’t have a way to version your schemas and map each of your feature**s
+to its expected schema, the cause of the reported alert might be due to the
+mismatched schema rather than a change in the data.
+
+These concerns are not to dismiss the importance of feature monitoring; changes
+in the feature space are a useful source of signals to understand the health of your
+ML systems. Hopefully, thinking about t
 
 <a name="9"></a>
 ## CHAPTER 9: Continual Learning and Test in Production
