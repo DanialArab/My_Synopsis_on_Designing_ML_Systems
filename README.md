@@ -774,7 +774,7 @@ one of the multiple processing steps.
 
 D. **The schema that your features follow can change over time.**
 
-If you don’t have a way to version your schemas and map each of your feature**s
+If you don’t have a way to version your schemas and map each of your features
 to its expected schema, the cause of the reported alert might be due to the
 mismatched schema rather than a change in the data.
 
