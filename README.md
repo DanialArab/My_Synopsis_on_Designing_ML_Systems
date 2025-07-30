@@ -799,6 +799,70 @@ team. Therefore, it’s out of scope for this book.
 
 30. **Monitoring Toolbox**
 
+Measuring, tracking, and interpreting metrics for complex systems is a nontrivial
+task, and engineers rely on a set of tools to help them do so. It’s common for
+the industry to herald (means signal, indicate) **metrics, logs, and traces** as the three pillars of monitoring.
+However, I find their differentiations murky. They seem to be generated from the
+perspective of people who develop monitoring systems: traces are a form of logs and
+metrics can be computed from logs. In this section, I’d like to focus on the set of tools
+from the perspective of users of the monitoring systems: **logs, dashboards, and alerts.**
+
+31. **Logs**
+
+Traditional software systems rely on logs to record events produced at runtime. An
+event is anything that can be of interest to the system developers, either at the time
+the event happens or later for debugging and analysis purposes. Examples of events
+are when a container starts, the amount of memory it takes, when a function is called,
+when that function finishes running, the other functions that this function calls, the
+input and output of that function, etc. Also, don’t forget to log crashes, stack traces,
+error codes, and more. In the words of Ian Malpass at Etsy, “If it moves, we track it.”49
+They also track things that haven’t changed yet, in case they’ll move later.
+
+The number of logs can grow very large very quickly.
+
+In the early days of software deployment, an application might be one single service.
+When something happened, you knew where that happened. But today, a system
+might consist of many different components: **containers, schedulers, microservices,
+polyglot persistence, mesh routing, ephemeral auto-scaling instances, serverless
+Lambda functions.** A request may do **20–30 hops from when it’s sent until when
+a response is received.** The hard part might not be in **detecting when something
+happened, but where the problem was.**
+
+When we log an event, we want to make it as **easy as possible for us to find it later.**
+This practice **with microservice architecture is called distributed tracing**. We want
+to give each process a unique ID so that, when something goes wrong, the error
+message will (hopefully) contain that ID. This allows us to search for the log messages
+associated with it. We also want to **record with each event all the metadata necessary:
+the time when it happens, the service where it happens, the function that is called, the
+user associated with the process, if any, etc.**
+
+32. **Ml use to analyze logs**
+
+Analyzing billions of logged events manually is futile, so many companies use ML
+to analyze logs. An example use case of ML in log analysis is **anomaly detection**:
+to detect abnormal events in your system. A more sophisticated model might even
+classify each event in terms of its priorities such as usual, abnormal, exception, error,
+and fatal.
+
+Another use case of ML in log analysis is that when a **service fails, it might be helpful
+to know the probability of related services being affected.** This could be especially
+useful when the **system is under cyberattack.**
+
+Many companies process logs in batch processes. In this scenario, you collect a large
+number of logs, then periodically query over them looking for specific events using
+SQL or process them using a batch process like in a Spark or Hadoop or Hive cluster.
+This makes the processing of logs efficient because you can leverage distributed and
+MapReduce processes to increase your processing throughput. However, because you
+process your logs periodically, you can only discover problems periodically.
+
+To discover anomalies in your logs as soon as they happen, you want to process your
+events as soon as they are logged. This makes **log processing a stream processing
+problem.** You can use **real-time transport such as Kafka or Amazon Kinesis to
+transport events as they are logged**. To search for events with specific characteristics
+in real time, you can leverage a streaming SQL engine like KSQL or Flink SQL.
+
+33. **Dashboards**
+
 
 
 
