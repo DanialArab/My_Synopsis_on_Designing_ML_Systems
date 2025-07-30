@@ -863,6 +863,23 @@ in real time, you can leverage a streaming SQL engine like KSQL or Flink SQL.
 
 33. **Dashboards**
 
+**A picture is worth a thousand words**. A series of numbers might mean nothing to
+you, but visualizing them on a graph might reveal the relationships among these
+numbers. Dashboards to visualize metrics are critical for monitoring.
+
+Another use of dashboards is to make monitoring accessible to nonengineers. Monitoring
+isn’t just for the developers of a system, but also for nonengineering stakeholders
+including product managers and business developers.
+
+Even though graphs can help a lot with understanding metrics, they aren’t sufficient
+on their own. You still need experience and statistical knowledge.
+
+Excessive metrics on a dashboard can also be counterproductive, a phenomenon
+known as dashboard rot. It’s important to pick the right metrics or abstract out
+lower-level metrics to compute higher-level signals that make better sense for your
+specific tasks.
+
+34. **Alerts**
 
 
 
