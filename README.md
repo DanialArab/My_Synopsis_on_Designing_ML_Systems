@@ -780,7 +780,28 @@ mismatched schema rather than a change in the data.
 
 These concerns are not to dismiss the importance of feature monitoring; changes
 in the feature space are a useful source of signals to understand the health of your
-ML systems. Hopefully, thinking about t
+ML systems. Hopefully, thinking about these concerns can help you choose a feature
+monitoring solution that works for you.
+
+29. **Monitoring raw inputs**
+
+As discussed in the previous section, a change in the features might be caused by
+problems in processing steps and not by changes in data. What if we monitor the
+raw inputs before they are processed? The raw input data might not be easier to
+monitor, as it can come from multiple sources in different formats, following multiple
+structures. The way many ML workflows are set up today also makes it impossible
+for ML engineers to get direct access to raw input data, as the raw input data is often
+managed by a data platform team who processes and moves the data to a location
+like a data warehouse, and the ML engineers can only query for data from that data
+warehouse where the data is already partially processed. Therefore, monitoring raw
+inputs is often a responsibility of the data platform team, not the data science or ML
+team. Therefore, it’s out of scope for this book.
+
+30. **Monitoring Toolbox**
+
+
+
+
 
 <a name="9"></a>
 ## CHAPTER 9: Continual Learning and Test in Production
