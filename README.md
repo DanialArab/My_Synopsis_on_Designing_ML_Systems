@@ -920,7 +920,115 @@ for something outside of their responsibilities. It’s also dangerous—being e
 conditions so that only critical alerts are sent out.
 
 
+35. **Observability**
 
+Monitoring makes no assumption about the relationship
+between the internal state of a system and its outputs. You monitor the external
+outputs of the system to figure out when something goes wrong inside the system—
+there’s no guarantee that the external outputs will help you figure out what goes
+wrong.
+
+In the early days of software deployment, software systems were simple enough that
+monitoring external outputs was sufficient for software maintenance. A system used
+to consist of only a few components, and a team used to have control over the entire
+codebase. If something went wrong, it was possible to make changes to the system to
+test and figure out what went wrong.
+
+However, software systems have grown significantly more complex over the last
+decade. Today, a software system consists of many components. Many of these components
+are services run by other companies—cue all cloud native services—which
+means that a team doesn’t even have control of the inside of all the components of
+their system. When something goes wrong, a team can no longer just break apart
+their system to find out. The team has to rely on external outputs of their system to
+figure out what’s going on internally.
+
+Observability is a term used to address this challenge. **It’s a concept drawn from control
+theory, and it refers to bringing “better visibility into understanding the complex
+behavior of software using [outputs] collected from the system at run time.”**
+
+When something goes wrong with an observable system, we should be able to figure
+out what went wrong by looking at the system’s logs and metrics without having to
+ship new code to the system. Observability is about instrumenting your system in a
+way to ensure that sufficient information about a system’s runtime is collected and
+analyzed.
+
+**Monitoring centers around metrics, and metrics are usually aggregated**. Observability
+allows **more fine-grain metrics, so that you can know not only when a model’s
+performance degrades but also for what types of inputs or what subgroups of users
+or over what period of time the model degrades.** For example, you should be able
+to query your logs for the answers to questions like: “show me all the users for
+which model A returned wrong predictions over the last hour, grouped by their zip
+codes” or “show me the outliers requests in the last 10 minutes” or “show me all the
+intermediate outputs of this input through the system.” To achieve this, you need to
+have logged your system’s outputs **using tags and other identifying keywords to allow
+these outputs to later be sliced and diced along different dimensions of your data.**
+
+In ML, observability encompasses **interpretability**. Interpretability helps us understand
+how an ML model works, and **observability helps us understand how the entire
+ML system, which includes the ML model, works**. For example, when a model’s
+performance degrades over the last hour, being able to interpret which feature contributes
+the most to all the wrong predictions made over the last hour will help with
+figuring out what went wrong with the system and how to fix it.55
+
+In this section, we’ve discussed multiple aspects of monitoring, from what data to
+monitor and what metrics to keep track of to different tools for monitoring and
+observability. Even though monitoring is a powerful concept, **it’s inherently passive.**
+You **wait for a shift to happen to detect it**. Monitoring helps unearth the problem
+**without correcting it**. In the next section, we’ll introduce **continual learning, a paradigm
+that can actively help you update your models to address shifts.**
+
+36. **Summary**
+
+To understand failures of ML systems, we differentiated between two types of failures:
+software systems failures (failures that also happen to non-ML systems) and MLspecific
+failures. Even though the majority of ML failures today are non-ML-specific,
+as tooling and infrastructure around MLOps matures, this might change.
+
+We discussed three major causes of ML-specific failures: production data differing
+from training data, edge cases, and degenerate feedback loops. The first two causes
+are related to data, whereas the last cause is related to system design because it
+happens when the system’s outputs influence the same system’s input.
+
+We zeroed into one failure that has gathered much attention in recent years: data
+distribution shifts. We looked into three types of shifts: covariate shift, label shift,
+and concept drift. Even though studying distribution shifts is a growing subfield of
+ML research, the research community hasn’t yet found a standard narrative. Different
+papers call the same phenomena by different names. Many studies are still based
+on the assumption that we know in advance how the distribution will shift or have
+the labels for the data from both the source distribution and the target distribution.
+However, in reality, we don’t know what the future data will be like, and obtaining
+labels for new data might be costly, slow, or just infeasible.
+
+To be able to detect shifts, we need to monitor our deployed systems. Monitoring is
+an important set of practices for any software engineering system in production, not
+just ML, and it’s an area of ML where we should learn as much as we can from the
+DevOps world.
+
+Monitoring is all about metrics. We discussed different metrics we need to monitor:
+operational metrics—the metrics that should be monitored with any software systems
+such as latency, throughput, and CPU utilization—and ML-specific metrics. Monitoring
+can be applied to accuracy-related metrics, predictions, features, and/or raw
+inputs.
+
+Monitoring is hard because even if it’s cheap to compute metrics, understanding
+metrics isn’t straightforward. It’s easy to build dashboards to show graphs, but it’s
+much more difficult to understand what a graph means, whether it shows signs
+of drift, and, if there’s drift, whether it’s caused by an underlying data distribution
+change or by errors in the pipeline. An understanding of statistics might be required
+to make sense of the numbers and graphs.
+
+Detecting model performance’s degradation in production is the first step. The next
+step is how to adapt our systems to changing environments, which we’ll discuss in the
+next chapter.
+
+37. **Telemetry**
+
+A **system’s outputs collected at runtime** are also called telemetry. Telemetry is another
+term that has emerged in the software monitoring industry over the last decade. The
+word “telemetry” comes from the Greek roots tele, meaning “remote,” and metron,
+meaning “measure.” So telemetry basically means **“remote measures.”** In the monitoring
+context, it refers to **logs and metrics collected from remote components such as
+cloud services or applications run on customer devices.**
 
 <a name="9"></a>
 ## CHAPTER 9: Continual Learning and Test in Production
