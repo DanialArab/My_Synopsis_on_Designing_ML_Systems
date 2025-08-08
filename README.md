@@ -242,6 +242,58 @@ Upon investigation, you discover that the bottleneck in responding to customer r
 <a name="7"></a>
 ## CHAPTER 7:Model Deployment and Prediction Service
 
+1. If you want to deploy a model for your friends to play with, all you have to do
+is to wrap your predict function in a POST request endpoint using Flask or FastAPI,
+put the dependencies this predict function needs to run in a container,2 and push
+your model and its associated container to a cloud service like AWS or GCP to expose
+the endpoint:
+
+    # Example of how to use FastAPI to turn your predict function
+    # into a POST endpoint
+    @app.route('/predict', methods=['POST'])
+    def predict():
+    X = request.get_json()['X']
+    y = MODEL.predict(X).tolist()
+    return json.dumps({'y': y}), 200
+
+You can use this exposed endpoint for downstream applications: e.g., when an application
+receives a prediction request from a user, this request is sent to the exposed
+endpoint, which returns a prediction.
+
+The hard parts include making your model available to millions of users with a
+latency of milliseconds and 99% uptime, setting up the infrastructure so that the right
+person can be immediately notified when something goes wrong, figuring out what
+went wrong, and seamlessly deploying the updates to fix what’s wrong.
+
+2. **Exporting a model**
+ 
+Exporting a model means converting this model into a format that
+can be used by another application. Some people call this process
+“serialization.”4 There are two parts of a model that you can export:
+the model definition and the model’s parameter values. The model
+definition defines the structure of your model, such as how many
+hidden layers it has and how many units in each layer. The parameter
+values provide the values for these units and layers. Usually,
+these two parts are exported together.
+
+In TensorFlow 2, you might use tf.keras.Model.save() to export
+your model into TensorFlow’s SavedModel format. In PyTorch, you
+might use torch.onnx.export() to export your model into ONNX
+format.
+
+3. **Common myths about ML deployment coming from people who haven’t deployed ML models**
+
+a. Myth 1: You Only Deploy One or Two ML Models at a Time
+
+b. Myth 2: If We Don’t Do Anything, Model Performance
+Remains the Same
+
+c. Myth 3: You Won’t Need to Update Your Models as Much
+
+d. Myth 4: Most ML Engineers Don’t Need to Worry About Scale
+
+
+
 
 
 <a name="8"></a>
