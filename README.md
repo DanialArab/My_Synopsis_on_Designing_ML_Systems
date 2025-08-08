@@ -285,12 +285,63 @@ format.
 
 a. Myth 1: You Only Deploy One or Two ML Models at a Time
 
+In reality, companies have many, many ML models. An application might have
+many different features, and each feature might require its own model.
+
+In fact, Uber has thousands of models in production.
+
 b. Myth 2: If We Don’t Do Anything, Model Performance
 Remains the Same
 
 c. Myth 3: You Won’t Need to Update Your Models as Much
 
+People tend to ask me: “How often should I update my models?” It’s the wrong
+question to ask. The right question should be: “How often can I update my models?”
+
 d. Myth 4: Most ML Engineers Don’t Need to Worry About Scale
+
+
+4. **Batch Prediction Versus Online Prediction**
+
+One **fundamental decision** you’ll have to make that will affect both your end users
+and developers working on your system is how it generates and serves its predictions
+to end users: online or batch. 
+
+5. **modes of prediction**
+
+If you forget everything else, there are three main modes of prediction that I hope
+you’ll remember:
+
+- Batch prediction, which uses only batch features.
+- Online prediction that uses only batch features (e.g., precomputed embeddings).
+- Online prediction that uses both batch features and streaming features. This is
+also known as streaming prediction.
+
+6. **Online prediction**
+
+Online prediction is when predictions are generated and returned as soon as requests
+for these predictions arrive. For example, you enter an English sentence into Google
+Translate and get back its French translation immediately. Online prediction is
+also known as on-demand prediction. Traditionally, when doing online prediction,
+requests are sent to the prediction service via RESTful APIs (e.g., HTTP requests—
+see “Data Passing Through Services” on page 73). When prediction requests are
+sent via HTTP requests, online prediction is also known as synchronous prediction:
+predictions are generated in synchronization with requests.
+
+7. **Batch prediction**
+
+Batch prediction is when predictions are generated periodically or whenever triggered.
+The predictions are stored somewhere, such as in SQL tables or an in-memory database,
+and retrieved as needed. For example, Netflix might generate movie recommendations
+for all of its users every four hours, and the precomputed recommendations
+are fetched and shown to users when they log on to Netflix. Batch prediction is also
+known as asynchronous prediction: predictions are generated asynchronously with
+requests.
+
+
+
+
+
 
 
 
