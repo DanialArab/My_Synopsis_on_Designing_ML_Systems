@@ -248,13 +248,13 @@ put the dependencies this predict function needs to run in a container,2 and pus
 your model and its associated container to a cloud service like AWS or GCP to expose
 the endpoint:
 
-    # Example of how to use FastAPI to turn your predict function
-    # into a POST endpoint
-    @app.route('/predict', methods=['POST'])
-    def predict():
-    X = request.get_json()['X']
-    y = MODEL.predict(X).tolist()
-    return json.dumps({'y': y}), 200
+       # Example of how to use FastAPI to turn your predict function
+       # into a POST endpoint
+       @app.route('/predict', methods=['POST'])
+       def predict():
+       X = request.get_json()['X']
+       y = MODEL.predict(X).tolist()
+       return json.dumps({'y': y}), 200
 
 You can use this exposed endpoint for downstream applications: e.g., when an application
 receives a prediction request from a user, this request is sent to the exposed
