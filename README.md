@@ -328,6 +328,10 @@ see “Data Passing Through Services” on page 73). When prediction requests ar
 sent via HTTP requests, online prediction is also known as synchronous prediction:
 predictions are generated in synchronization with requests.
 
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_5.png)
+
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_6.png)
+
 7. **Batch prediction**
 
 Batch prediction is when predictions are generated periodically or whenever triggered.
@@ -338,6 +342,7 @@ are fetched and shown to users when they log on to Netflix. Batch prediction is 
 known as asynchronous prediction: predictions are generated asynchronously with
 requests.
 
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_4.png)
 
 
 
