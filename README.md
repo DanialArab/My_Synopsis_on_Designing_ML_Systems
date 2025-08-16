@@ -322,11 +322,11 @@ also known as streaming prediction.
 Online prediction is when predictions are generated and returned as soon as requests
 for these predictions arrive. For example, you enter an English sentence into Google
 Translate and get back its French translation immediately. Online prediction is
-also known as on-demand prediction. Traditionally, when doing online prediction,
-requests are sent to the prediction service via RESTful APIs (e.g., HTTP requests—
-see “Data Passing Through Services” on page 73). When prediction requests are
+also known as **on-demand prediction**. Traditionally, when doing online prediction,
+requests are sent to the prediction service **via RESTful APIs (e.g., HTTP requests**—
+see “Data Passing Through Services” on page 73). **When prediction requests are
 sent via HTTP requests, online prediction is also known as synchronous prediction:
-predictions are generated in synchronization with requests.
+predictions are generated in synchronization with requests.**
 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_5.png)
 
