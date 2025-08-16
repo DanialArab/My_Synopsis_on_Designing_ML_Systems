@@ -667,7 +667,36 @@ Fuse multiple operators into one to avoid redundant memory access. For example,
 two operations on the same array require two loops over that array. In a
 fused case, it’s just one loop.
 
+15. **ML in Browsers**
 
+If you can run your model in a browser, you can run your model on any device that
+supports browsers: MacBooks, Chromebooks, iPhones, Android phones, and more.
+You wouldn’t need to care what chips those devices use. If Apple decides to switch
+from Intel chips to ARM chips, it’s not your problem.
+
+When talking about browsers, many people think of JavaScript. There are tools that
+can help you compile your models into JavaScript, such as TensorFlow.js, Synaptic,
+and brain.js. However, JavaScript is slow, and its capacity as a programming language
+is limited for complex logics such as extracting features from data.
+
+A more promising approach is WebAssembly (WASM). WASM is an open standard
+that allows you to run executable programs in browsers. After you’ve built your
+models in scikit-learn, PyTorch, TensorFlow, or whatever frameworks you’ve used,
+instead of compiling your models to run on specific hardware, you can compile your
+model to WASM. You get back an executable file that you can just use with JavaScript.
+
+16. **Summary**
+
+Online prediction makes your model more responsive to users’ changing
+preferences, but you have to worry about inference latency. Batch prediction is a
+workaround for when your models take too long to generate predictions, but it makes
+your model less flexible.
+
+Similarly, doing inference on the cloud is easy to set up, but it becomes impractical
+with network latency and cloud cost. Doing inference on the edge requires having
+edge devices with sufficient compute power, memory, and battery.
+
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_16.png)
 
 
 
