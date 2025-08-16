@@ -367,12 +367,304 @@ Item embeddings are usually precomputed in batch and fetched
 whenever they are needed for online prediction. In this case,
 embeddings can be considered online features but not streaming
 features.
-Streaming features refer exclusively to features computed from
-streaming data.
-Batch
+**Streaming features refer exclusively to features computed from
+streaming data.**
 
+9. However, online prediction and batch prediction don’t have to be mutually exclusive.
+**One hybrid solution is that you precompute predictions for popular queries, then
+generate predictions online for less popular queries**. Table 7-1 summarizes the key
+points to consider for online prediction and batch prediction.
 
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/table_7_1.png)
 
+10. Also, with online prediction, you don’t have to generate predictions for users who
+aren’t visiting your site. Imagine you run an app where only 2% of your users log in
+daily—e.g., in 2020, Grubhub had 31 million users and 622,000 daily orders.15 If you
+generate predictions for every user each day, the compute used to generate 98% of
+your predictions will be wasted.
+
+10. **From Batch Prediction to Online Prediction**
+
+To people coming to ML from an academic background, the more natural way to
+serve predictions is probably online. You give your model an input and it generates
+a prediction as soon as it receives that input. This is likely how most people interact
+with their models while prototyping. This is also likely easier to do for most companies
+when first deploying a model. You export your model, upload the exported
+model to Amazon SageMaker or Google App Engine, and get back an exposed
+endpoint.16 Now, if you send a request that contains an input to that endpoint, it will
+send back a prediction generated on that input.
+
+A problem with online prediction is that your model might take too long to generate
+predictions. Instead of generating predictions as soon as they arrive, what if you
+compute predictions in advance and store them in your database, and fetch them
+when requests arrive? This is exactly what batch prediction does. With this approach,
+you can generate predictions for multiple inputs at once, leveraging distributed
+techniques to process a high volume of samples efficiently.
+
+Because the predictions are precomputed, you don’t have to worry about how long
+it’ll take your models to generate predictions. For this reason, batch prediction can
+also be seen as a trick to reduce the inference latency of more complex models—the
+time it takes to retrieve a prediction is usually less than the time it takes to generate it.
+
+Batch prediction is good for when you want to generate a lot of predictions and don’t
+need the results immediately. You don’t have to use all the predictions generated. For
+example, you can make predictions for all customers on how likely they are to buy a
+new product, and reach out to the top 10%.
+
+However, the problem with batch prediction is that it makes your model less
+responsive to users’ change preferences. This limitation can be seen even in more
+technologically progressive companies like Netflix. Say you’ve been watching a lot
+of horror movies lately, so when you first log in to Netflix, horror movies dominate
+recommendations. But you’re feeling bright today, so you search “comedy” and start
+browsing the comedy category. Netflix should learn and show you more comedy in
+your list of their recommendations, right? As of writing this book, it can’t update the
+list until the next batch of recommendations is generated, but I have no doubt that
+this limitation will be addressed in the near future.
+
+Another problem with batch prediction is that you need to know what requests to
+generate predictions for in advance. In the case of recommending movies for users,
+you know in advance how many users to generate recommendations for.17 However,
+for cases when you have unpredictable queries—if you have a system to translate
+from English to French, it might be impossible to anticipate every possible English
+text to be translated—you need to use online prediction to generate predictions as
+requests arrive.
+
+In the Netflix example, batch prediction causes mild inconvenience (which is tightly
+coupled with user engagement and retention), not catastrophic failures. There are
+many applications where batch prediction would lead to catastrophic failures or just
+wouldn’t work. Examples where online prediction is crucial include high-frequency
+trading, autonomous vehicles, voice assistants, unlocking your phone using face or
+fingerprints, fall detection for elderly care, and fraud detection. Being able to detect a
+fraudulent transaction that happened three hours ago is still better than not detecting
+it at all, but being able to detect it in real time can prevent the fraudulent transaction
+from going through.
+
+Batch prediction is a workaround for when online prediction isn’t cheap enough or
+isn’t fast enough. Why generate one million predictions in advance and worry about
+storing and retrieving them if you can generate each prediction as needed at the exact
+same cost and same speed?
+
+As hardware becomes more customized and powerful and better techniques are
+being developed to allow faster, cheaper online predictions, online prediction might
+become the default.
+
+In recent years, companies have made significant investments to move from batch
+prediction to online prediction. To overcome the latency challenge of online prediction,
+two components are required:
+
+- A (near) real-time pipeline that can work with incoming data, extract streaming
+features (if needed), input them into a model, and return a prediction in near real
+time. A streaming pipeline with real-time transport and a stream computation
+engine can help with that.
+- A model that can generate predictions at a speed acceptable to its end users. For
+most consumer apps, this means milliseconds.
+
+11. **Unifying Batch Pipeline and Streaming Pipeline**
+
+Batch prediction is largely a product of legacy systems. In the last decade, big data
+processing has been dominated by batch systems like MapReduce and Spark, which
+allow us to periodically process a large amount of data very efficiently. When companies
+started with ML, they leveraged their existing batch systems to make predictions.
+When these companies want to use streaming features for their online prediction,
+they need to build a separate streaming pipeline. Let’s go through an example to make
+this more concrete.
+
+Imagine you want to build a model to predict arrival time for an application like
+Google Maps. The prediction is continually updated as a user’s trip progresses. A
+feature you might want to use is the average speed of all the cars in your path in the
+last five minutes. For training, you might use data from the last month. To extract
+this feature from your training data, you might want to put all your data into a
+dataframe to compute this feature for multiple training samples at the same time.
+During inference, this feature will be continually computed on a **sliding window**. This
+means that in **training this feature is computed in batch, whereas during inference
+this feature is computed in a streaming process.**
+
+**Having two different pipelines to process your data is a common cause for bugs
+in ML production.** One cause for bugs is when the changes in one pipeline aren’t
+correctly replicated in the other, leading to two pipelines extracting two different
+sets of features. This is especially common if the two pipelines are maintained by
+two different teams, such as the ML team maintains the batch pipeline for training
+while the deployment team maintains the stream pipeline for inference, as shown in
+Figure 7-7.
+
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_7.png)
+
+12. **Model compression**
+
+We’ve talked about a streaming pipeline that allows an ML system to extract streaming
+features from incoming data and input them into an ML model in (near) real
+time. However, having a near (real-time) pipeline isn’t enough for online prediction.
+In the next section, we’ll discuss techniques for fast inference for ML models.
+
+If the model you want to deploy takes too long to generate predictions, there are three
+main approaches to reduce its inference latency: make it do inference faster, make the
+model smaller, or make the hardware it’s deployed on run faster.
+
+The process of making a model smaller is called model compression, and the process
+to make it do inference faster is called inference optimization. Originally, model
+compression was to make models fit on edge devices. However, making models
+smaller often makes them run faster.
+
+**A. Low-Rank Factorization**
+
+The key idea behind low-rank factorization is to replace high-dimensional tensors
+with lower-dimensional tensors.
+
+**B. Knowledge Distillation**
+
+Knowledge distillation is a method in which a small model (student) is trained to
+mimic a larger model or ensemble of models (teacher). The smaller model is what
+you’ll deploy. Even though the student is often trained after a pretrained teacher, both
+may also be trained at the same time.23 One example of a distilled network used in
+production is **DistilBERT, which reduces the size of a BERT model by 40% while
+retaining 97% of its language understanding capabilities and being 60% faster.**
+
+The advantage of this approach is that it can work regardless of the architectural
+differences between the teacher and the student networks. For example, you can get
+a random forest as the student and a transformer as the teacher.
+
+**C. Pruning**
+
+Pruning was a method originally used for decision trees where you remove sections of
+a tree that are uncritical and redundant for classification.25 As neural networks gained
+wider adoption, people started to realize that neural networks are over-parameterized
+and began to find ways to reduce the workload caused by the extra parameters.
+
+Pruning, in the context of neural networks, has two meanings. One is to remove
+entire nodes of a neural network, which means changing its architecture and reducing
+its number of parameters. The more common meaning is to find parameters least
+useful to predictions and set them to 0. In this case, pruning doesn’t reduce the total
+number of parameters, only the number of nonzero parameters. The architecture of
+the neural network remains the same. This helps with reducing the size of a model
+because pruning makes a neural network more sparse, and sparse architecture tends
+to require less storage space than dense structure.
+
+**D. Quantization**
+
+Quantization is the most general and commonly used model compression method.
+It’s straightforward to do and generalizes over tasks and architectures.
+
+Quantization reduces a model’s size by using **fewer bits to represent its parameters.**
+By default, most software packages use 32 bits to represent a float number (single
+precision floating point). If a model has 100M parameters and each requires 32 bits
+to store, it’ll take up 400 MB. If we use 16 bits to represent a number, we’ll reduce the
+memory footprint by half. Using 16 bits to represent a float is called half precision.
+
+Instead of using floats, you can have a model entirely in integers; each integer
+takes only 8 bits to represent. This method is also known as “fixed point.” In the
+extreme case, some have attempted the 1-bit representation of each weight (binary
+weight neural networks), e.g., BinaryConnect and XNOR-Net.30 The authors of the
+XNOR-Net paper spun off Xnor.ai, a startup that focused on model compression. In
+early 2020, it was acquired by Apple for a reported $200M.31
+
+Quantization not only reduces memory footprint but also improves the computation
+speed. First, it allows us to increase our batch size. Second, less precision speeds up
+computation, which further reduces training time and inference latency. 
+
+There are downsides to quantization. Reducing the number of bits to represent
+your numbers means that you can represent a smaller range of values. For values
+outside that range, you’ll have to round them up and/or scale them to be in range.
+Rounding numbers leads to rounding errors, and small rounding errors can lead to
+big performance changes. You also run the risk of rounding/scaling your numbers to
+under-/overflow and rendering it to 0. Efficient rounding and scaling is nontrivial to
+implement at a low level, but luckily, major frameworks have this built in.
+
+Quantization can either happen during training (quantization aware training),32
+where models are trained in lower precision, or post-training, where models are
+trained in single-precision floating point and then quantized for inference. Using
+quantization during training means that you can use less memory for each parameter,
+which allows you to train larger models on the same hardware.
+
+Fixed-point inference has become a standard in the industry. Some edge devices
+only support fixed-point inference. Most popular frameworks for on-device
+ML inference—Google’s TensorFlow Lite, Facebook’s PyTorch Mobile, NVIDIA’s
+TensorRT—offer post-training quantization for free with a few lines of code.
+
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_10.png)
+
+13. **ML on the Cloud and on the Edge**
+
+Another decision you’ll want to consider is where your model’s computation will
+happen: on the cloud or on the edge. On the cloud means a large chunk of computation
+is done on the cloud, either public clouds or private clouds. On the edge
+means a large chunk of computation is done on consumer devices—such as browsers,
+phones, laptops, smartwatches, cars, security cameras, robots, embedded devices,
+FPGAs (field programmable gate arrays), and ASICs (application-specific integrated
+circuits)—which are also known as edge devices.
+
+The easiest way is to package your model up and deploy it via a managed cloud
+service such as AWS or GCP, and this is how many companies deploy when they
+get started in ML. Cloud services have done an incredible job to make it easy for
+companies to bring ML models into production.
+
+However, there are many downsides to cloud deployment. The first is cost. ML
+models can be compute-intensive, and compute is expensive.
+
+As their cloud bills climb, more and more companies are looking for ways to push
+their computations to edge devices. The more computation is done on the edge, the
+less is required on the cloud, and the less they’ll have to pay for servers.
+
+Other than help with controlling costs, there are many properties that make edge
+computing appealing. The first is that it allows your applications to run where cloud
+computing cannot. When your models are on public clouds, they rely on stable
+internet connections to send data to the cloud and back. Edge computing allows your
+models to work in situations where there are no internet connections or where the
+connections are unreliable, such as in rural areas or developing countries.
+
+Second, when your models are already on consumers’ devices, you can worry less
+about network latency. Requiring data transfer over the network (sending data to
+the model on the cloud to make predictions then sending predictions back to the
+users) might make some use cases impossible. In many cases, network latency is a
+bigger bottleneck than inference latency.
+
+Putting your models on the edge is also appealing when handling sensitive user
+data. ML on the cloud means that your systems might have to send user data over
+networks, making it susceptible to being intercepted. Cloud computing also often
+means storing data of many users in the same place, which means a breach can affect
+many people. “Nearly 80% of companies experienced a cloud data breach in [the] past
+18 months,” according to Security magazine.40
+
+Edge computing makes it easier to comply with regulations, like GDPR, about how
+user data can be transferred or stored. While edge computing might reduce privacy
+concerns, it doesn’t eliminate them altogether. In some cases, edge computing might
+make it easier for attackers to steal user data, such as they can just take the device
+with them.
+
+To move computation to the edge, the edge devices have to be powerful enough to
+handle the computation, have enough memory to store ML models and load them
+into memory, as well as have enough battery or be connected to an energy source to
+power the application for a reasonable amount of time. Running a full-sized BERT on
+your phone, if your phone is capable of running BERT, is a very quick way to kill its
+battery.
+
+14. **Model optimization**
+
+There are two ways to optimize your ML models: locally and globally. Locally is when
+you optimize an operator or a set of operators of your model. Globally is when you
+optimize the entire computation graph (A computation
+graph is a graph that describes the order in which your computation is executed.) end to end.
+
+There are standard local optimization techniques that are known to speed up your
+model, most of them making things run in parallel or reducing memory access on
+chips. Here are four of the common techniques:
+
+- Vectorization
+Given a loop or a nested loop, instead of executing it one item at a time, execute
+multiple elements contiguous in memory at the same time to reduce latency
+caused by data I/O.
+
+- Parallelization
+Given an input array (or n-dimensional array), divide it into different, independent
+work chunks, and do the operation on each chunk individually.
+
+Loop tiling46
+Change the data accessing order in a loop to leverage hardware’s memory layout
+and cache. This kind of optimization is hardware dependent. A good access
+pattern on CPUs is not a good access pattern on GPUs.
+Operator fusion
+Fuse multiple operators into one to avoid redundant memory access. For example,
+two operations on the same array require two loops over that array. In a
+fused case, it’s just one loop. Figure 7-13 shows an example of operator fusion.
 
 
 
