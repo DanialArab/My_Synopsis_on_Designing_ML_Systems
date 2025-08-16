@@ -329,7 +329,7 @@ sent via HTTP requests, online prediction is also known as synchronous predictio
 predictions are generated in synchronization with requests.**
 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_5.png)
-
+ 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_6.png)
 
 7. **Batch prediction**
