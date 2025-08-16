@@ -639,14 +639,14 @@ battery.
 
 14. **Model optimization**
 
-There are two ways to optimize your ML models: locally and globally. Locally is when
+There are two ways to optimize your ML models: **locally and globally**. **Locally is when
 you optimize an operator or a set of operators of your model. Globally is when you
 optimize the entire computation graph (A computation
-graph is a graph that describes the order in which your computation is executed.) end to end.
+graph is a graph that describes the order in which your computation is executed.) end to end.**
 
 There are standard local optimization techniques that are known to speed up your
-model, most of them making things run in parallel or reducing memory access on
-chips. Here are four of the common techniques:
+model, most of them making things run in **parallel or reducing memory access on
+chips**. Here are four of the common techniques:
 
 - Vectorization
 Given a loop or a nested loop, instead of executing it one item at a time, execute
@@ -657,14 +657,17 @@ caused by data I/O.
 Given an input array (or n-dimensional array), divide it into different, independent
 work chunks, and do the operation on each chunk individually.
 
-Loop tiling46
+- Loop tiling
 Change the data accessing order in a loop to leverage hardware’s memory layout
 and cache. This kind of optimization is hardware dependent. A good access
 pattern on CPUs is not a good access pattern on GPUs.
-Operator fusion
+
+- Operator fusion
 Fuse multiple operators into one to avoid redundant memory access. For example,
 two operations on the same array require two loops over that array. In a
-fused case, it’s just one loop. Figure 7-13 shows an example of operator fusion.
+fused case, it’s just one loop.
+
+
 
 
 
