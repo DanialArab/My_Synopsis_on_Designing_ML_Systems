@@ -339,13 +339,37 @@ The predictions are stored somewhere, such as in SQL tables or an in-memory data
 and retrieved as needed. For example, Netflix might generate movie recommendations
 for all of its users every four hours, and the precomputed recommendations
 are fetched and shown to users when they log on to Netflix. Batch prediction is also
-known as asynchronous prediction: predictions are generated asynchronously with
-requests.
+known as **asynchronous prediction: predictions are generated asynchronously with
+requests.**
 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_7_4.png)
 
-here
+As discussed in Chapter 3, features computed from historical data, such as data in
+databases and data warehouses, are batch features. Features computed from **streaming
+data—data in real-time transports—are streaming features**. In batch prediction, only
+batch features are used. In online prediction, however, it’s possible to use both batch
+features and streaming features. For example, after a user puts in an order on Door‐
+Dash, they might need the following features to estimate the delivery time:
 
+- Batch features: The mean preparation time of this restaurant in the past
+- Streaming features: In the last 10 minutes, how many other orders they have, and how many delivery people are available
+
+8. **Item embeddings as a common batch feature**
+
+I’ve heard the terms “streaming features” and “online features” used
+interchangeably. They are actually different. Online features are
+more general, as they refer to any feature used for online prediction,
+including batch features stored in memory.
+
+A very common type of batch feature used for online prediction,
+especially **session-based recommendations**, is item embeddings.
+Item embeddings are usually precomputed in batch and fetched
+whenever they are needed for online prediction. In this case,
+embeddings can be considered online features but not streaming
+features.
+Streaming features refer exclusively to features computed from
+streaming data.
+Batch
 
 
 
