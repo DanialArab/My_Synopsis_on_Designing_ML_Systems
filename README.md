@@ -412,8 +412,11 @@ Another approach is to train two different models, each optimizing one loss. So 
 have two models:
 
 quality_model
+
 - Minimizes quality_loss and outputs the predicted quality of each post
+
 engagement_model
+
 - Minimizes engagement_loss and outputs the predicted number of clicks of each
 post
 
