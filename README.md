@@ -335,10 +335,105 @@ visualized in Figure 2-5.
 
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_2_5.png)
 
+This is a bad approach because whenever a new app is added, you might have to
+retrain your model from scratch, or at least retrain all the components of your model
+whose number of parameters depends on N. A better approach is to frame this as a
+regression task. The input is the user’s, the environment’s, and the app’s features. The
+output is a single value between 0 and 1; the higher the value, the more likely the
+user will open the app given the context. In this framing, for a given user at a given
+time, there are N predictions to make, one for each app, but each prediction is just a
+number. This improved setup is visualized in Figure 2-6
+
 ![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_2_6.png)
+
+In this new framing, whenever there’s a new app you want to consider recommending
+to a user, you simply need to use new inputs with this new app’s feature instead of
+having to retrain your model or part of your model from scratch.
+
+9. **Objective Functions**:
+
+To learn, an ML model needs an objective function to guide the learning process.
+An objective function is also called a loss function, because the objective of the learning
+process is usually to minimize (or optimize) the loss caused by wrong predictions.
+For supervised ML, this loss can be computed by comparing the model’s outputs with
+the ground truth labels using a measurement like root mean squared error (RMSE) or
+cross entropy.
+
+Choosing an objective function is usually straightforward, though not because objective
+functions are easy. Coming up with meaningful objective functions requires
+algebra knowledge, so most ML engineers just use common loss functions like RMSE
+or MAE (mean absolute error) for regression, logistic loss (also log loss) for binary
+classification, and cross entropy for multiclass classification.
+
+10. **Decoupling objectives**
+
+Framing ML problems can be tricky when you want to minimize multiple objective
+functions. Imagine you’re building a system to rank items on users’ newsfeeds. Your
+original goal is to maximize users’ engagement. You want to achieve this goal through
+the following three objectives:
+
+- Filter out spam
+- Filter out NSFW content
+- Rank posts by engagement: how likely users will click on it
+
+However, you quickly learned that optimizing for users’ engagement alone can lead to
+questionable ethical concerns. Because extreme posts tend to get more engagements,
+your algorithm learned to prioritize extreme content.13 You want to create a more
+wholesome newsfeed. So you have a new goal: maximize users’ engagement while
+minimizing the spread of extreme views and misinformation. To obtain this goal, you
+add two new objectives to your original plan:
+- Filter out spam
+- Filter out NSFW content
+- Filter out misinformation
+- Rank posts by quality
+- Rank posts by engagement: how likely users will click on it
+
+Now two objectives are in conflict with each other. If a post is engaging but it’s of
+questionable quality, should that post rank high or low?
+An objective is represented by an objective function. To rank posts by quality, you
+first need to predict posts’ quality, and you want posts’ predicted quality to be as close
+to their actual quality as possible. Essentially, you want to minimize quality_loss: the
+difference between each post’s predicted quality and its true quality.14
+Similarly, to rank posts by engagement, you first need to predict the number of clicks
+each post will get. You want to minimize engagement_loss: the difference between
+each post’s predicted clicks and its actual number of clicks.
+One approach is to combine these two losses into one loss and train one model to
+minimize that loss:
+
+loss = ɑ quality_loss + β engagement_loss
+
+You can randomly test out different values of α and β to find the values that work
+best. 
+
+A problem with this approach is that each time you tune α and β—for example, if the
+quality of your users’ newsfeeds goes up but users’ engagement goes down, you might
+want to decrease α and increase β—you’ll have to retrain your model.
+Another approach is to train two different models, each optimizing one loss. So you
+have two models:
+
+quality_model
+- Minimizes quality_loss and outputs the predicted quality of each post
+engagement_model
+- Minimizes engagement_loss and outputs the predicted number of clicks of each
+post
+
+You can combine the models’ outputs and rank posts by their combined scores:
+
+ɑ quality_score + β engagement_score
+
+Now you can tweak α and β without retraining your models!
+In general, when there are multiple objectives, it’s a good idea to decouple them
+first because it makes model development and maintenance easier. First, it’s easier to
+tweak your system without retraining models, as previously explained. Second, it’s
+easier for maintenance since different objectives might need different maintenance
+schedules. Spamming techniques evolve much faster than the way post quality is
+perceived, so spam filtering systems need updates at a much higher frequency than
+quality-ranking systems.
 
 <a name="3"></a>
 ## CHAPTER 3: Data Engineering Fundamentals
+
+HERE 
 
 <a name="4"></a>
 ## CHAPTER 4: Training Data
