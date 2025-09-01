@@ -182,8 +182,7 @@ Because ML is a data-driven approach, a book on ML systems design will be amiss 
 
 2. **Business and ML Objectives**: We first need to consider the objectives of the proposed ML projects. When working on an ML project, data scientists tend to care about the ML objectives: the metrics they can measure about the performance of their ML models such as accuracy, F1 score, inference latency, etc. They get excited about improving their model’s accuracy from 94% to 94.2% and might spend a ton of resources—data, compute, and engineering time—to achieve that. But the truth is: most companies don’t care about the fancy ML metrics. They don’t care about increasing a model’s accuracy from 94% to 94.2% unless it moves some **business metrics.** A pattern I see in many short-lived ML projects is that the data scientists become too focused on hacking ML metrics without paying attention to business metrics. Their managers, however, only care about business metrics and, after failing to see how an ML project can help push their business metrics, kill the projects prematurely (and possibly let go of the data science team involved)
 
-The sole purpose of businesses, according to the Nobel-winning economist Milton Friedman, is to **maximize profits for shareholders**. The ultimate goal of any project within a business is, therefore, to increase profits,
-either directly or indirectly: directly such as increasing sales (conversion rates) and cutting costs; indirectly such as higher customer satisfaction and increasing time spent on a website.
+The sole purpose of businesses, according to the Nobel-winning economist Milton Friedman, is to **maximize profits for shareholders**. The ultimate goal of any project within a business is, therefore, to increase profits, either directly or indirectly: directly such as increasing sales (conversion rates) and cutting costs; indirectly such as higher customer satisfaction and increasing time spent on a website.
 
 One of the reasons why predicting ad click-through rates and fraud detection are among the most popular use cases for ML today is that it’s **easy to map ML models’ performance to business metrics**: every increase in click-through rate results in actual ad revenue, and every fraudulent transaction stopped results in actual money saved.
 
@@ -195,9 +194,31 @@ Returns on investment in ML depend a lot on the **maturity stage of adoption**. 
 
 3. **Requirements for ML Systems**: Reliability -- scalability -- maintainability -- adaptability
 
-Reliability: ML systems can fail **silently.**
+We can’t say that we’ve successfully built an ML system without knowing what
+requirements the system has to satisfy. The specified requirements for an ML system
+vary from use case to use case. However, most systems should have these four characteristics:
+reliability, scalability, maintainability, and adaptability. We’ll walk through
+each of these concepts in detail. Let’s take a closer look at reliability first.
 
-Scalability: There are multiple ways an ML system can grow. It can grow in **complexity**. Last year you used a logistic regression model that fit into an Amazon Web Services (AWS) free tier instance with 1 GB of RAM, but this year, you switched to a 100-million-parameter neural network that requires 16 GB of RAM to generate predictions. Your ML system can grow **in traffic volume**. When you started deploying an ML system, you only served 10,000 prediction requests daily. However, as your company’s user base grows, the number of prediction requests your ML system serves daily fluctuates between 1 million and 10 million.
+**Reliability**:
+
+The system should continue to perform the correct function at the desired level of
+performance even in the face of adversity (hardware or software faults, and even
+human error).
+“Correctness” might be difficult to determine for ML systems. For example, your
+system might call the predict function—e.g., model.predict()—correctly, but the
+predictions are wrong. How do we know if a prediction is wrong if we don’t have
+ground truth labels to compare it with?
+With traditional software systems, you often get a warning, such as a system crash
+or runtime error or 404. However, **ML systems can fail silently**. End users don’t even
+know that the system has failed and might have kept on using it as if it were working.
+For example, if you use Google Translate to translate a sentence into a language you
+don’t know, it might be very hard for you to tell even if the translation is wrong
+
+
+**Scalability:**
+
+There are multiple ways an ML system can grow. It can grow in **complexity**. Last year you used a logistic regression model that fit into an Amazon Web Services (AWS) free tier instance with 1 GB of RAM, but this year, you switched to a 100-million-parameter neural network that requires 16 GB of RAM to generate predictions. Your ML system can grow **in traffic volume**. When you started deploying an ML system, you only served 10,000 prediction requests daily. However, as your company’s user base grows, the number of prediction requests your ML system serves daily fluctuates between 1 million and 10 million.
 
 An ML system might grow in **ML model count**. Initially, you might have only one model for one use case, such as detecting the trending hashtags on a social network site like Twitter. However, over time, you want to add more features to this use case, so you’ll add one more to filter out NSFW (not safe for work) content and another model to filter out tweets generated by bots. This growth pattern is especially common in ML systems that target enterprise use cases. Initially, a startup might serve only one enterprise customer, which means this startup only has one model. However, as this startup gains more customers, they might have one model for each customer. A startup I worked with had 8,000 models in production for their 8,000 enterprise customers. 
 
@@ -205,12 +226,18 @@ Whichever way your system grows, there should be reasonable ways of dealing with
 
 However, handling growth **isn’t just resource scaling**, but also **artifact management**. Managing one hundred models is very different from managing one model. With one model, you can, perhaps, manually monitor this model’s performance and manually update the model with new data. Since there’s only one model, you can just have a file that helps you reproduce this model whenever needed. However, with one hundred models, both the **monitoring and retraining aspect** will need to be **automated**. You’ll need a way to manage the code generation so that you can adequately reproduce a model when you need to.
 
-Maintainability: It’s important to structure your workloads and set up your infrastructure in such a way that different contributors can work using tools that they are comfortable with, instead of one group of contributors forcing their tools onto other groups. **Code should be documented. Code, data, and artifacts should be versioned.** Models should be sufficiently reproducible so that even when the original authors are not around, other contributors can have sufficient contexts to build on their work. When a problem occurs, different contributors should be able to work together to identify the problem and implement a solution without finger-pointing.
+**Maintainability:**
 
-Adaptability: To adapt to shifting data distributions and business requirements, the system shouldhave some capacity for both discovering aspects for performance improvement and allowing updates without service interruption.
-**Because ML systems are part code, part data, and data can change quickly, ML systems need to be able to evolve quickly.**
+It’s important to structure your workloads and set up your infrastructure in such a way that different contributors can work using tools that they are comfortable with, instead of one group of contributors forcing their tools onto other groups. **Code should be documented. Code, data, and artifacts should be versioned.** Models should be sufficiently reproducible so that even when the original authors are not around, other contributors can have sufficient contexts to build on their work. When a problem occurs, different contributors should be able to work together to identify the problem and implement a solution without finger-pointing.
 
-4. Iterative Process: Developing an ML system is an iterative and, in most cases, never-ending process. Once a system is put into production, it’ll need to be continually monitored and updated. Before deploying my first ML system, I thought the process would be linear and straightforward. I thought all I had to do was to collect data, train a model, deploy that model, and be done. However, I soon realized that the process looks more like a cycle with a lot of back and forth between different steps.
+**Adaptability:**
+
+To adapt to shifting data distributions and business requirements, the system shouldhave some capacity for both discovering aspects for performance improvement and allowing updates without service interruption.
+**Because ML systems are part code, part data, and data can change quickly, ML systems need to be able to evolve quickly.** This is tightly linked to maintainability.
+
+4. **Iterative Process:**
+
+Developing an ML system is an iterative and, in most cases, never-ending process. Once a system is put into production, it’ll need to be continually monitored and updated. Before deploying my first ML system, I thought the process would be linear and straightforward. I thought all I had to do was to collect data, train a model, deploy that model, and be done. However, I soon realized that the process looks more like a cycle with a lot of back and forth between different steps.
 
 Figure 2-2 shows an oversimplified representation of what the iterative process for developing ML systems in production looks like from the perspective of a data scientist or an ML engineer. This process looks different from the perspective of an ML platform engineer or a DevOps engineer, as they might not have as much context into model development and might spend a lot more time on setting up infrastructure.
 
@@ -224,8 +251,91 @@ Slow customer support is a problem, but it’s not an ML problem. **An ML proble
 
 Upon investigation, you discover that the bottleneck in responding to customer requests lies in routing customer requests to the right department among four departments: accounting, inventory, HR (human resources), and IT. You can alleviate this bottleneck by developing an ML model to predict which of these four departments a request should go to. **This makes it a classification problem. The input is the customer request. The output is the department the request should go to. The objective function is to minimize the difference between the predicted department and the actual department.**
 
-6. **Types of ML Tasks**: HERE
+6. **Types of ML Tasks - Binary versus multiclass classification**:
 
+Within classification problems, the fewer classes there are to classify, the simpler the
+problem is. The simplest is binary classification, where there are only two possible
+classes. Examples of binary classification include classifying whether a comment is
+toxic, whether a lung scan shows signs of cancer, whether a transaction is fraudulent.
+It’s unclear whether this type of problem is common in the industry because they
+are common in nature or simply because ML practitioners are most comfortable
+handling them.
+
+When there are more than two classes, the problem becomes multiclass classification.
+Dealing with binary classification problems is much easier than dealing with multiclass
+problems. For example, calculating F1 and visualizing confusion matrices are a
+lot more intuitive when there are only two classes.
+
+When the number of classes is high, such as disease diagnosis where the number
+of diseases can go up to thousands or product classifications where the number of
+products can go up to tens of thousands, we say the classification task has high
+cardinality. High cardinality problems can be very challenging. The first challenge is
+in data collection. In my experience, ML models typically need at least 100 examples
+for each class to learn to classify that class. So if you have 1,000 classes, you already
+need at least 100,000 examples. The data collection can be especially difficult for rare
+classes. When you have thousands of classes, it’s likely that some of them are rare
+
+When the number of classes is large, hierarchical classification might be useful. In
+hierarchical classification, you have a classifier to first classify each example into one
+of the large groups. Then you have another classifier to classify this example into one
+of the subgroups. For example, for product classification, you can first classify each
+product into one of the four main categories: electronics, home and kitchen, fashion,
+or pet supplies. After a product has been classified into a category, say fashion, you
+can use another classifier to put this product into one of the subgroups: shoes, shirts,
+jeans, or accessories.
+
+7. **Multiclass versus multilabel classification**:
+
+In both binary and multiclass classification, each example belongs to exactly one
+class. When an example can belong to multiple classes, we have a multilabel classification
+problem. For example, when building a model to classify articles into four
+topics—tech, entertainment, finance, and politics—an article can be in both tech and
+finance.
+
+There are two major approaches to multilabel classification problems. The first is to
+treat it as you would a multiclass classification. In multiclass classification, if there
+are four possible classes [tech, entertainment, finance, politics] and the label for an
+example is entertainment, you represent this label with the vector [0, 1, 0, 0]. In
+multilabel classification, if an example has both labels entertainment and finance, its
+label will be represented as [0, 1, 1, 0].
+
+The second approach is to turn it into a set of binary classification problems. For the
+article classification problem, you can have four models corresponding to four topics,
+each model outputting whether an article is in that topic or not.
+
+Out of all task types, multilabel classification is usually the one that I’ve seen companies
+having the most problems with. Multilabel means that the number of classes
+an example can have varies from example to example. First, this makes it difficult
+for label annotation since it increases the label multiplicity problem that we discuss
+in Chapter 4. For example, an annotator might believe an example belongs to two
+classes while another annotator might believe the same example to belong in only one
+class, and it might be difficult resolving their disagreements.
+
+Second, this varying number of classes makes it hard to extract predictions from raw
+probability. Consider the same task of classifying articles into four topics. Imagine
+that, given an article, your model outputs this raw probability distribution: [0.45, 0.2,
+0.02, 0.33]. In the multiclass setting, when you know that an example can belong to
+only one category, you simply pick the category with the highest probability, which
+is 0.45 in this case. In the multilabel setting, because you don’t know how many
+categories an example can belong to, you might pick the two highest probability
+categories (corresponding to 0.45 and 0.33) or three highest probability categories
+(corresponding to 0.45, 0.2, and 0.33).
+
+8. **Multiple ways to frame a problem**:
+
+Changing the way you frame your problem might make your problem significantly
+harder or easier. Consider the task of predicting what app a phone user wants to use
+next. A naive setup would be to frame this as a multiclass classification task—use
+the user’s and environment’s features (user demographic information, time, location,
+previous apps used) as input, and output a probability distribution for every single
+app on the user’s phone. Let N be the number of apps you want to consider recommending
+to a user. In this framing, for a given user at a given time, there is only
+one prediction to make, and the prediction is a vector of the size N. This setup is
+visualized in Figure 2-5.
+
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_2_5.png)
+
+![](https://github.com/DanialArab/images/blob/main/Designing_ML_Systems/fig_2_6.png)
 
 <a name="3"></a>
 ## CHAPTER 3: Data Engineering Fundamentals
